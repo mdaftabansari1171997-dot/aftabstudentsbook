@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Aftab Students Book - All classes, boards, notes, MCQ tests and model papers.">
+<title>Aftab Students Book | Learn. Practice. Succeed.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Vadodara:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#"><span class="brand-mark">A</span><span>AFTAB <b>STUDENTS BOOK</b><small>LEARN • PRACTICE • SUCCEED</small></span></a>
+  <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+  <nav id="nav"><a href="#classes">Classes</a><a href="#resources">Study Material</a><a href="#test">MCQ Test</a><a href="#about">About</a></nav>
+  <a class="nav-cta" href="student.html">Student Login ↗</a>
+</header>
+<main>
+<section class="hero">
+ <div class="hero-copy">
+  <div class="eyebrow"><span></span> YOUR COMPLETE ONLINE STUDY PORTAL</div>
+  <h1>पढ़ाई का नया साथी,<br><em>सफलता की ओर।</em></h1>
+  <p>कक्षा 1 से 12 तक — Bihar Board, CBSE, ICSE और अन्य State Boards के लिए नोट्स, MCQ, मॉडल पेपर और अभ्यास सामग्री।</p>
+  <div class="hero-actions"><a class="btn primary" href="#classes">अपनी कक्षा चुनें <span>→</span></a><a class="btn light" href="#test">MCQ टेस्ट दें</a></div>
+  <div class="hero-meta"><div><b>1–12</b><small>All Classes</small></div><div><b>4+</b><small>Board Categories</small></div><div><b>24×7</b><small>Learn Anytime</small></div></div>
+ </div>
+ <div class="hero-art">
+  <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+  <div class="book-stack"><div class="book book-a">STUDY<br><small>SMART</small></div><div class="book book-b">PRACTICE<br><small>DAILY</small></div><div class="book book-c">SUCCEED<br><small>ALWAYS</small></div></div>
+  <div class="floating-note note-one">✦ Learn at your pace</div><div class="floating-note note-two">✓ Practice makes progress</div>
+ </div>
+</section>
+<section class="trust-strip"><span>📘 आसान नोट्स</span><span>✍️ MCQ अभ्यास</span><span>📄 मॉडल पेपर</span><span>🎯 परीक्षा तैयारी</span></section>
+<section class="section" id="classes">
+ <div class="section-head"><div><div class="eyebrow">FIND YOUR CLASS</div><h2>अपनी कक्षा चुनें</h2><p>अपनी कक्षा और बोर्ड चुनकर पढ़ाई शुरू करें।</p></div><span class="section-count">CLASS 01 — 12</span></div>
+ <div class="filters">
+  <label>Board <select id="boardFilter"><option value="All">All Boards</option><option>Bihar Board</option><option>CBSE Board</option><option>ICSE Board</option><option>Other State Boards</option></select></label>
+  <label>Medium <select id="mediumFilter"><option>Hindi</option><option>English</option><option>Both</option></select></label>
+ </div>
+ <div class="class-grid" id="classGrid"></div>
+</section>
+<section class="section resource-section" id="resources">
+ <div class="section-head"><div><div class="eyebrow">STUDY LIBRARY</div><h2>Study Material</h2><p>अपनी जरूरत के अनुसार अध्ययन सामग्री चुनें।</p></div></div>
+ <div class="resource-grid">
+  <article class="resource-card"><div class="resource-icon blue">▤</div><h3>Chapter Notes</h3><p>अध्यायवार सरल नोट्स और महत्वपूर्ण बिंदु।</p><a href="#classes">कक्षा चुनें →</a></article>
+  <article class="resource-card"><div class="resource-icon gold">✓</div><h3>MCQ Practice</h3><p>विषयवार वस्तुनिष्ठ प्रश्न और उत्तर।</p><a href="#test">टेस्ट शुरू करें →</a></article>
+  <article class="resource-card"><div class="resource-icon purple">▣</div><h3>Model Papers</h3><p>परीक्षा पैटर्न पर आधारित अभ्यास पेपर।</p><a href="#classes">कक्षा चुनें →</a></article>
+  <article class="resource-card"><div class="resource-icon green">⬇</div><h3>PDF Library</h3><p>अध्ययन सामग्री PDF में उपलब्ध कराएँ।</p><a href="#classes">कक्षा चुनें →</a></article>
+ </div>
+</section>
+<section class="test-section" id="test">
+ <div class="test-copy"><div class="eyebrow">QUICK KNOWLEDGE CHECK</div><h2>अपनी तैयारी<br>आज ही जाँचें।</h2><p>एक छोटा डेमो MCQ हल करें। सही उत्तर चुनें और तुरंत परिणाम देखें।</p></div>
+ <div class="quiz-card"><div class="quiz-top"><span>DEMO QUIZ</span><span>01 / 01</span></div><h3>भारत का संविधान कब लागू हुआ?</h3><div class="options" id="options"><button data-answer="1947">15 अगस्त 1947</button><button data-answer="1950">26 जनवरी 1950</button><button data-answer="1949">26 नवंबर 1949</button><button data-answer="1952">1952</button></div><div id="quizResult" class="quiz-result" aria-live="polite"></div></div>
+</section>
+<section class="about section" id="about"><div><div class="eyebrow">ABOUT THE PLATFORM</div><h2>हर विद्यार्थी के लिए<br>एक डिजिटल लाइब्रेरी।</h2></div><p><b>Aftab Students Book</b> एक शिक्षा पोर्टल का प्रारंभिक संस्करण है। इसका उद्देश्य विद्यार्थियों को कक्षा, बोर्ड और विषय के अनुसार अध्ययन सामग्री तक सरल पहुँच देना है। सामग्री को संबंधित बोर्ड के नवीनतम पाठ्यक्रम के अनुसार अपडेट किया जाना चाहिए।</p></section>
+</main>
+<footer><a class="brand footer-brand" href="#"><span class="brand-mark">A</span><span>AFTAB <b>STUDENTS BOOK</b><small>LEARN • PRACTICE • SUCCEED</small></span></a><div>© <span id="year"></span> Aftab Students Book. All rights reserved.</div><div class="footer-note">Educational content portal • <a href="student.html">Student Login</a> • <a href="admin.html">Admin Login</a></div></footer>
+<script src="script.js"></script>
+</body></html>

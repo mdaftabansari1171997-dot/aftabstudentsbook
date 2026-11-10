@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Panel | Aftab Students Book</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="admin.css"></head>
+<body class="admin-body">
+<header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">A</span><span>AFTAB <b>STUDENTS BOOK</b><small>ADMIN CONSOLE</small></span></a><a class="nav-cta" href="index.html">← View Website</a></header>
+<main class="admin-wrap">
+ <section class="login-card" id="loginCard"><div class="admin-icon">✦</div><div class="eyebrow">SECURE AREA • DEMO MODE</div><h1>Admin Login</h1><p>अपने Study Portal का कंटेंट मैनेज करें।</p>
+  <form id="loginForm"><label>Admin Email<input id="username" type="email" autocomplete="username" required placeholder="admin@example.com"></label><label>Password<input id="password" type="password" autocomplete="current-password" required placeholder="Supabase admin password"></label><button class="btn primary full" type="submit">Login to Dashboard →</button><div id="loginError" class="error"></div></form>
+  <div class="demo-hint">पहले Supabase Auth में admin email user बनाएँ और SQL से उसका role <b>admin</b> करें। विवरण README में हैं।</div>
+ </section>
+ <section id="dashboard" class="dashboard" hidden>
+  <div class="dash-head"><div><div class="eyebrow">CONTENT MANAGEMENT</div><h1>Admin Dashboard</h1><p>Welcome to Aftab Students Book</p></div><button id="logout" class="btn light">Logout</button></div>
+  <div class="stats"><div><small>Total Resources</small><b id="totalResources">0</b></div><div><small>PDF Resources</small><b id="pdfResources">0</b></div><div><small>MCQ Sets</small><b id="mcqResources">0</b></div></div>
+  <div class="admin-grid">
+   <section class="panel"><h2>नया Study Material जोड़ें</h2><form id="resourceForm">
+    <label>Title / सामग्री का नाम<input id="title" required placeholder="जैसे गणित अध्याय 1 नोट्स"></label>
+    <div class="form-row"><label>Board<select id="board"><option>Bihar Board</option><option>CBSE Board</option><option>ICSE Board</option><option>Other State Boards</option></select></label><label>Class<select id="class"><option value="">Select class</option></select></label></div>
+    <div class="form-row"><label>Subject<input id="subject" required placeholder="गणित / Science"></label><label>Type<select id="type"><option>Notes</option><option>Book</option><option>Model Paper</option><option>MCQ</option><option>Other</option></select></label></div>
+    <label>Medium<select id="medium"><option>Hindi</option><option>English</option><option>Both</option></select></label>
+    <label>PDF File (optional)<input id="pdf" type="file" accept="application/pdf"></label>
+    <button class="btn primary full" type="submit">＋ Save Study Material</button><div id="saveMessage" class="success"></div>
+   </form></section>
+   <section class="panel"><div class="panel-head"><h2>Uploaded Material</h2><button id="export" class="small-btn">Export CSV</button></div><div id="resourceList" class="resource-list"><p class="muted">अभी कोई सामग्री नहीं है।</p></div></section>
+  </div>
+  <div class="notice"><b>महत्वपूर्ण:</b> यह बिना सर्वर वाला शुरुआती डेमो है। डेटा इसी ब्राउज़र/डिवाइस में रहता है। Browser data clear करने पर डेटा मिट सकता है; PDF और डेटा दूसरे मोबाइल पर अपने-आप नहीं दिखेंगे। असली सुरक्षित Admin Login, cloud database, multi-device PDF storage और student login के लिए backend (जैसे Supabase) जोड़ना आवश्यक है। केवल वही किताबें/PDF अपलोड करें जिन्हें प्रकाशित करने की अनुमति हो।</div>
+ </section>
+</main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="backend-config.js"></script><script src="admin.js"></script></body></html>
