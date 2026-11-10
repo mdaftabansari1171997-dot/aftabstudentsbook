@@ -2,3 +2,5 @@
 .mcq-admin-panel{grid-column:1/-1}.mcq-list{margin-top:16px}.mcq-list .resource-item{align-items:center}
 
 .mcq-admin-panel{grid-column:1/-1}
+
+.admin-tools{margin-top:18px}.student-search{display:flex;gap:8px;margin:12px 0}.student-search input{flex:1;min-width:0}.admin-tools form{display:grid;gap:12px}
