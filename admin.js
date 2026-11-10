@@ -41,3 +41,40 @@ $('resourceForm').addEventListener('submit',async e=>{
 });
 $('export').addEventListener('click',async()=>{const {data,error}=await sb.from('study_materials').select('*');if(error){alert(error.message);return;}const keys=['title','board','class_level','course','university','subject','language','material_type','file_path','created_at'];const csv=[keys.join(','),...(data||[]).map(x=>keys.map(k=>'"'+String(x[k]??'').replaceAll('"','""')+'"').join(','))].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='aftab-study-material.csv';a.click();URL.revokeObjectURL(a.href)});
 (async()=>{if(await currentAdmin())await showDashboard()})();
+
+async function loadMcqAdmin(){
+ const {data:quizzes,error}=await sb.from('mcq_quizzes').select('*').order('created_at',{ascending:false});
+ if(error){$('adminQuizList').textContent='MCQ error: '+error.message;return;}
+ const select=$('questionQuizSelect');select.innerHTML='<option value="">Test चुनें</option>';
+ const list=$('adminQuizList');list.innerHTML='';
+ for(const q of quizzes||[]){
+  select.add(new Option(q.title+' ('+q.class_level+')',q.id));
+  const row=document.createElement('div');row.className='resource-item';
+  const info=document.createElement('div');const b=document.createElement('b');b.textContent=q.title;const sm=document.createElement('small');sm.textContent=[q.board,q.class_level,q.subject,q.duration_minutes+' min',q.is_published?'Published':'Draft'].join(' • ');info.append(b,sm);
+  const actions=document.createElement('div');actions.style.display='flex';actions.style.gap='6px';
+  const pub=document.createElement('button');pub.className='small-btn';pub.textContent=q.is_published?'Unpublish':'Publish';pub.onclick=async()=>{const {error}=await sb.from('mcq_quizzes').update({is_published:!q.is_published}).eq('id',q.id);if(error)alert(error.message);else loadMcqAdmin();};
+  const del=document.createElement('button');del.className='delete-btn';del.textContent='Delete';del.onclick=async()=>{if(confirm('इस MCQ Test और इसके प्रश्न हटाएँ?')){const {error}=await sb.from('mcq_quizzes').delete().eq('id',q.id);if(error)alert(error.message);else loadMcqAdmin();}};
+  actions.append(pub,del);row.append(info,actions);list.append(row);
+ }
+ const {data:attempts,error:attemptError}=await sb.from('mcq_attempts').select('id,quiz_id,student_id,score,total_questions,submitted_at').order('submitted_at',{ascending:false}).limit(50);
+ const results=$('mcqResults');results.innerHTML='';
+ if(attemptError){results.textContent='Results error: '+attemptError.message;return;}
+ for(const at of attempts||[]){const q=(quizzes||[]).find(x=>x.id===at.quiz_id);const row=document.createElement('div');row.className='resource-item';const info=document.createElement('div');const b=document.createElement('b');b.textContent=(q?.title||'MCQ Test')+' — '+at.score+'/'+at.total_questions;const sm=document.createElement('small');sm.textContent='Student ID: '+at.student_id+' • '+new Date(at.submitted_at).toLocaleString();info.append(b,sm);row.append(info);results.append(row);}
+ if(!attempts?.length)results.innerHTML='<p class="muted">अभी कोई विद्यार्थी परिणाम नहीं है।</p>';
+}
+$('quizForm').addEventListener('submit',async e=>{
+ e.preventDefault();const {data:{user}}=await sb.auth.getUser();
+ const {error}=await sb.from('mcq_quizzes').insert({title:$('quizTitle').value.trim(),board:$('quizBoard').value,class_level:$('quizClass').value,subject:$('quizSubject').value.trim(),duration_minutes:Number($('quizDuration').value),created_by:user.id,is_published:false});
+ $('quizSaveMessage').textContent=error?error.message:'MCQ Test बन गया। अब प्रश्न जोड़ें और Publish करें।';
+ if(!error){e.target.reset();$('quizDuration').value=15;await loadMcqAdmin();}
+});
+$('questionForm').addEventListener('submit',async e=>{
+ e.preventDefault();const quizId=$('questionQuizSelect').value;if(!quizId){$('questionSaveMessage').textContent='पहले Test चुनें।';return;}
+ const {data:existing,error:countError}=await sb.from('mcq_questions').select('id').eq('quiz_id',quizId);
+ if(countError){$('questionSaveMessage').textContent=countError.message;return;}
+ const payload={quiz_id:Number(quizId),question_text:$('questionText').value.trim(),option_a:$('optionA').value.trim(),option_b:$('optionB').value.trim(),option_c:$('optionC').value.trim(),option_d:$('optionD').value.trim(),correct_option:$('correctOption').value,explanation:$('questionExplanation').value.trim(),sort_order:existing.length};
+ const {error}=await sb.from('mcq_questions').insert(payload);$('questionSaveMessage').textContent=error?error.message:'प्रश्न सेव हो गया।';
+ if(!error){e.target.reset();await loadMcqAdmin();}
+});
+const previousShowDashboard=showDashboard;
+showDashboard=async()=>{await previousShowDashboard();await loadMcqAdmin();};
