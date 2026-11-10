@@ -123,3 +123,15 @@ end;
 $$;
 revoke all on function public.submit_mcq_attempt(bigint, jsonb) from public;
 grant execute on function public.submit_mcq_attempt(bigint, jsonb) to authenticated;
+
+-- Expose question text/options to students without exposing the answer key.
+create or replace view public.mcq_student_questions
+with (security_barrier = true)
+as
+select q.id, q.quiz_id, q.question_text, q.option_a, q.option_b, q.option_c, q.option_d, q.sort_order
+from public.mcq_questions q
+join public.mcq_quizzes z on z.id = q.quiz_id
+where z.is_published = true;
+revoke select on public.mcq_questions from authenticated;
+grant insert, update, delete on public.mcq_questions to authenticated;
+grant select on public.mcq_student_questions to authenticated;
