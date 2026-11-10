@@ -89,3 +89,29 @@ $('questionForm').addEventListener('submit',async e=>{
 });
 const previousShowDashboard=showDashboard;
 showDashboard=async()=>{await previousShowDashboard();await loadMcqAdmin();};
+
+async function loadCertificateSettings(){
+ const {data,error}=await sb.from('certificate_settings').select('*').eq('id',1).maybeSingle();
+ if(error){$('certificateSettingsMessage').textContent=error.message;return;}
+ if(data){$('centerName').value=data.center_name||'';$('centerContactName').value=data.contact_name||'';$('centerPhone').value=data.phone||'';$('centerEmail').value=data.email||'';$('centerAddress').value=data.address||'';}
+}
+$('certificateSettingsForm').addEventListener('submit',async e=>{
+ e.preventDefault();const {data:{user}}=await sb.auth.getUser();
+ const payload={id:1,center_name:$('centerName').value.trim(),contact_name:$('centerContactName').value.trim(),phone:$('centerPhone').value.trim(),email:$('centerEmail').value.trim(),address:$('centerAddress').value.trim(),updated_at:new Date().toISOString(),updated_by:user.id};
+ const {error}=await sb.from('certificate_settings').upsert(payload,{onConflict:'id'});
+ $('certificateSettingsMessage').textContent=error?'Save नहीं हुआ: '+error.message:'Certificate details सेव हो गए।';
+});
+async function loadStudentDirectory(){
+ const box=$('studentDirectory');box.textContent='लोड हो रहा है…';
+ const term=$('studentSearch').value.trim();
+ let query=sb.from('profiles').select('id,full_name,phone,board,class_level,medium,created_at').order('created_at',{ascending:false}).limit(500);
+ if(term)query=query.or('full_name.ilike.%'+term+'%,phone.ilike.%'+term+'%,class_level.ilike.%'+term+'%,id.eq.'+term);
+ const {data,error}=await query;box.innerHTML='';
+ if(error){box.textContent='Student list error: '+error.message;return;}
+ if(!data?.length){box.textContent='कोई विद्यार्थी नहीं मिला।';return;}
+ for(const p of data){const row=document.createElement('div');row.className='resource-item';const info=document.createElement('div');const b=document.createElement('b');b.textContent=p.full_name||'नाम उपलब्ध नहीं';const sm=document.createElement('small');sm.textContent=[p.phone,p.board,p.class_level,p.medium,'ID: '+p.id].filter(Boolean).join(' • ');info.append(b,sm);row.append(info);box.append(row);}
+}
+$('studentSearchBtn').addEventListener('click',loadStudentDirectory);
+$('studentSearch').addEventListener('keydown',e=>{if(e.key==='Enter')loadStudentDirectory();});
+const priorShowDashboard=showDashboard;
+showDashboard=async()=>{await priorShowDashboard();await loadCertificateSettings();await loadStudentDirectory();};
