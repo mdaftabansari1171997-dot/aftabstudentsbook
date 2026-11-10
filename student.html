@@ -24,6 +24,16 @@
   </section>
 
   <section class="student-panel" id="studentQuizPanel"><h2>Online MCQ Tests</h2><p class="muted">अपनी कक्षा के अनुसार टेस्ट चुनें और अभ्यास करें।</p><div id="studentQuizList" class="quiz-list">MCQ Tests लोड हो रहे हैं…</div><div id="quizRunner" hidden></div><div id="quizHistory" class="quiz-history"></div></section>
-  <section class="student-panel"><h2>Student Profile</h2><p class="profile-line"><span>नाम</span><b id="profileName">—</b></p><p class="profile-line"><span>मोबाइल</span><b id="profileMobile2">—</b></p><p class="profile-line"><span>Registration</span><b>Supabase account</b></p></section>
+  <section class="student-panel" id="profilePanel"><h2>Student Profile / विद्यार्थी विवरण</h2>
+   <form id="profileForm" class="profile-form">
+    <label>पूरा नाम<input id="profileEditName" required maxlength="100"></label>
+    <label>मोबाइल नंबर<input id="profileEditMobile" readonly></label>
+    <div class="form-row"><label>Board<select id="profileEditBoard"><option value="">चुनें</option><option>Bihar Board</option><option>CBSE Board</option><option>ICSE Board</option><option>Other State Boards</option></select></label>
+    <label>Class / Semester<select id="profileEditClass"><option value="">चुनें</option><option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option><option>Class 11</option><option>Class 12</option><option>BA Semester 1</option><option>BA Semester 2</option><option>BA Semester 3</option><option>BA Semester 4</option><option>BA Semester 5</option><option>BA Semester 6</option><option>BA Part 1</option><option>BA Part 2</option><option>BA Part 3</option></select></label></div>
+    <label>Medium<select id="profileEditMedium"><option value="">चुनें</option><option>Hindi</option><option>English</option><option>Urdu</option><option>Both</option></select></label>
+    <button class="btn primary" type="submit">Profile सेव करें</button><div id="profileSaveMessage" class="student-message"></div>
+   </form>
+  </section>
+  <section class="student-panel"><h2>🏆 Top 10 Student Leaderboard</h2><div id="studentLeaderboard" class="leaderboard-list">लोड हो रहा है…</div></section>
  </section>
 </main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="backend-config.js"></script><script src="student.js"></script></body></html>
