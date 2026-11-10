@@ -69,3 +69,57 @@ for all to authenticated using (public.is_aftab_admin()) with check (public.is_a
 
 create index if not exists mcq_questions_quiz_id_idx on public.mcq_questions(quiz_id, sort_order);
 create index if not exists mcq_attempts_student_id_idx on public.mcq_attempts(student_id, submitted_at desc);
+
+-- Server-side scoring: correct answers are never sent to student browsers.
+create or replace function public.submit_mcq_attempt(p_quiz_id bigint, p_answers jsonb)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_user uuid := auth.uid();
+  v_score integer := 0;
+  v_total integer := 0;
+  v_details jsonb := '[]'::jsonb;
+  v_q record;
+  v_selected text;
+  v_correct boolean;
+  v_attempt_id bigint;
+begin
+  if v_user is null then
+    raise exception 'Please sign in first';
+  end if;
+  if not exists (select 1 from public.mcq_quizzes where id = p_quiz_id and is_published = true) then
+    raise exception 'Quiz is not available';
+  end if;
+  for v_q in
+    select id, correct_option, explanation
+    from public.mcq_questions
+    where quiz_id = p_quiz_id
+    order by sort_order, id
+  loop
+    v_total := v_total + 1;
+    select upper(elem->>'selected') into v_selected
+    from jsonb_array_elements(coalesce(p_answers, '[]'::jsonb)) elem
+    where (elem->>'question_id')::bigint = v_q.id
+    limit 1;
+    v_correct := v_selected = v_q.correct_option;
+    if v_correct then v_score := v_score + 1; end if;
+    v_details := v_details || jsonb_build_array(jsonb_build_object(
+      'question_id', v_q.id,
+      'selected', v_selected,
+      'correct_option', v_q.correct_option,
+      'is_correct', v_correct,
+      'explanation', coalesce(v_q.explanation, '')
+    ));
+  end loop;
+  if v_total = 0 then raise exception 'This quiz has no questions'; end if;
+  insert into public.mcq_attempts(quiz_id, student_id, score, total_questions, answers)
+  values(p_quiz_id, v_user, v_score, v_total, v_details)
+  returning id into v_attempt_id;
+  return jsonb_build_object('attempt_id', v_attempt_id, 'score', v_score, 'total_questions', v_total, 'answers', v_details);
+end;
+$$;
+revoke all on function public.submit_mcq_attempt(bigint, jsonb) from public;
+grant execute on function public.submit_mcq_attempt(bigint, jsonb) to authenticated;
