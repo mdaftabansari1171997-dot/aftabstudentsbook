@@ -126,3 +126,32 @@ async function loadQuizHistory(){
 }
 const previousStudentShowDashboard=showDashboard;
 showDashboard=async profile=>{await previousStudentShowDashboard(profile);await loadStudentQuizzes();await loadQuizHistory();};
+
+async function loadStudentProfile(){
+ const {data:{user}}=await sb.auth.getUser();if(!user)return;
+ const {data,error}=await sb.from('profiles').select('full_name,phone,board,class_level,medium').eq('id',user.id).maybeSingle();
+ if(error){$('profileSaveMessage').textContent=error.message;return;}
+ $('profileEditName').value=data?.full_name||'';
+ $('profileEditMobile').value=data?.phone||user.phone||'';
+ $('profileEditBoard').value=data?.board||'';
+ $('profileEditClass').value=data?.class_level||'';
+ $('profileEditMedium').value=data?.medium||'';
+}
+$('profileForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const {data:{user}}=await sb.auth.getUser();if(!user)return;
+ const payload={id:user.id,full_name:$('profileEditName').value.trim(),phone:user.phone||$('profileEditMobile').value,board:$('profileEditBoard').value||null,class_level:$('profileEditClass').value||null,medium:$('profileEditMedium').value||null,updated_at:new Date().toISOString()};
+ const {error}=await sb.from('profiles').upsert(payload,{onConflict:'id'});
+ $('profileSaveMessage').textContent=error?'सेव नहीं हुआ: '+error.message:'आपकी Profile सेव हो गई।';
+ if(!error){$('welcomeName').textContent=payload.full_name;$('profileName').textContent=payload.full_name;$('profileMobile').textContent=payload.phone||'—';$('profileMobile2').textContent=payload.phone||'—';}
+});
+async function loadStudentLeaderboard(){
+ const box=$('studentLeaderboard');if(!box)return;
+ const {data,error}=await sb.rpc('get_mcq_leaderboard',{p_limit:10});
+ box.innerHTML='';
+ if(error){box.textContent='Leaderboard लोड नहीं हुआ: '+error.message;return;}
+ if(!data?.length){box.textContent='अभी कोई प्रकाशित टेस्ट परिणाम नहीं है।';return;}
+ data.forEach((x,i)=>{const row=document.createElement('div');row.className='leaderboard-row';const rank=document.createElement('b');rank.textContent='#'+(i+1);const name=document.createElement('span');name.textContent=x.student_name+' • '+(x.class_level||'Class not set');const score=document.createElement('strong');score.textContent=x.percentage+'% ('+x.total_score+'/'+x.total_questions+')';row.append(rank,name,score);box.append(row);});
+}
+const oldShowDashboardForProfile=showDashboard;
+showDashboard=async profile=>{await oldShowDashboardForProfile(profile);await loadStudentProfile();await loadStudentLeaderboard();};
