@@ -1,5 +1,4 @@
 const grid=document.getElementById('classGrid');
-const boards=['Bihar Board','CBSE Board','ICSE Board','Other State Boards'];
 function renderClasses(){
  const board=document.getElementById('boardFilter').value;
  const medium=document.getElementById('mediumFilter').value;
@@ -7,7 +6,10 @@ function renderClasses(){
  for(let n=1;n<=12;n++){
   const card=document.createElement('article');card.className='class-card';
   card.innerHTML=`<div class="class-num">${String(n).padStart(2,'0')}</div><h3>Class ${n}</h3><p>${board==='All'?'All Boards':board} · ${medium} Medium</p><span class="arrow">↗</span>`;
-  card.addEventListener('click',()=>alert(`Class ${n} selected. Add verified ${board==='All'?'board-wise':board} study notes, books and MCQ content for this class in the content section.`));
+  card.addEventListener('click',()=>{
+   const params=new URLSearchParams({class_level:'Class '+n,board:board==='All'?'':board,language:medium});
+   window.location.href='student.html?'+params.toString();
+  });
   grid.appendChild(card);
  }
 }
