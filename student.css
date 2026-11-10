@@ -24,3 +24,5 @@
 .profile-form{display:grid;gap:12px}.profile-form .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.profile-form button{justify-self:start;padding:11px 22px;border:0;border-radius:8px;cursor:pointer}
 .leaderboard-list{display:grid;gap:8px}.leaderboard-row{display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;padding:12px;border:1px solid #e8edf4;border-radius:9px}.leaderboard-row>b{color:#1267d6}.leaderboard-row span{font-size:13px}.leaderboard-row strong{font-size:12px;color:#16804b}
 @media(max-width:600px){.profile-form .form-row{grid-template-columns:1fr}.leaderboard-row{grid-template-columns:32px 1fr}.leaderboard-row strong{grid-column:2}}
+
+#myCertificates .resource-item{display:flex;justify-content:space-between;align-items:center;gap:12px}#myCertificates button{border:0;background:#1267d6;color:white;border-radius:7px;padding:9px 12px;cursor:pointer}
