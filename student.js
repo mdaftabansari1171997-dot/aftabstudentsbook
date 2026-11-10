@@ -184,12 +184,26 @@ function printCertificate(attempt,quiz,settings){
  w.document.close();
 }
 function escapeCert(value){return String(value||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-const beforeProfileDashboard=showDashboard;
+/* Single dashboard loader: avoids nested async showDashboard wrappers. */
 showDashboard=async profile=>{
- await beforeProfileDashboard(profile);
- try{await loadMyCertificates();}catch(err){const box=$('myCertificates');if(box)box.textContent='Certificate load error: '+(err?.message||String(err));}
+ $('loginBox').hidden=true;
+ $('studentDashboard').hidden=false;
+ $('welcomeName').textContent=profile?.name||'Student';
+ if($('profileName'))$('profileName').textContent=profile?.name||'—';
+ $('profileMobile').textContent=profile?.phone||'—';
+ if($('profileMobile2'))$('profileMobile2').textContent=profile?.phone||'—';
+ const tasks=[
+  ['Study Material',loadMaterials,'studentMaterials'],
+  ['MCQ Tests',loadStudentQuizzes,'studentQuizList'],
+  ['Quiz History',loadQuizHistory,'quizHistory'],
+  ['Student Profile',loadStudentProfile,'profileSaveMessage'],
+  ['Leaderboard',loadStudentLeaderboard,'studentLeaderboard'],
+  ['Certificates',loadMyCertificates,'myCertificates']
+ ];
+ await Promise.all(tasks.map(async([label,fn,id])=>{
+  try{await fn();}catch(err){const el=$(id);if(el)el.textContent=label+' error: '+(err?.message||String(err));}
+ }));
 };
-
 /* Certificate panel boot: independent of dashboard callback wrapping. */
 (async()=>{
  const box=$('myCertificates');if(!box)return;
