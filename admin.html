@@ -22,6 +22,22 @@
    </form></section>
    <section class="panel"><div class="panel-head"><h2>Uploaded Material</h2><button id="export" class="small-btn">Export CSV</button></div><div id="resourceList" class="resource-list"><p class="muted">अभी कोई सामग्री नहीं है।</p></div></section>
   </div>
+
+  <section class="panel mcq-admin-panel"><h2>MCQ Test बनाएं</h2><form id="quizForm">
+   <label>Test का नाम<input id="quizTitle" required placeholder="जैसे Class 10 Science Test 1"></label>
+   <div class="form-row"><label>Board<select id="quizBoard"><option>Bihar Board</option><option>CBSE Board</option><option>ICSE Board</option><option>Other State Boards</option></select></label><label>Class<select id="quizClass"><option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option selected>Class 10</option><option>Class 11</option><option>Class 12</option><option>BA Semester 1</option><option>BA Semester 2</option><option>BA Semester 3</option><option>BA Semester 4</option><option>BA Semester 5</option><option>BA Semester 6</option></select></label></div>
+   <div class="form-row"><label>Subject<input id="quizSubject" required placeholder="Science / Math / Hindi"></label><label>Duration (minutes)<input id="quizDuration" type="number" min="1" max="240" value="15" required></label></div>
+   <button class="btn primary full" type="submit">＋ Create MCQ Test</button><div id="quizSaveMessage" class="success"></div>
+  </form><div id="adminQuizList" class="resource-list mcq-list"><p class="muted">MCQ Test लोड हो रहे हैं…</p></div></section>
+  <section class="panel"><h2>चुने हुए Test में प्रश्न जोड़ें</h2><form id="questionForm">
+   <label>Test चुनें<select id="questionQuizSelect" required><option value="">पहले MCQ Test बनाएं</option></select></label>
+   <label>प्रश्न<textarea id="questionText" rows="2" required placeholder="प्रश्न लिखें"></textarea></label>
+   <div class="form-row"><label>Option A<input id="optionA" required></label><label>Option B<input id="optionB" required></label></div>
+   <div class="form-row"><label>Option C<input id="optionC" required></label><label>Option D<input id="optionD" required></label></div>
+   <div class="form-row"><label>सही उत्तर<select id="correctOption"><option>A</option><option>B</option><option>C</option><option>D</option></select></label><label>Explanation (optional)<input id="questionExplanation"></label></div>
+   <button class="btn primary full" type="submit">＋ प्रश्न सेव करें</button><div id="questionSaveMessage" class="success"></div>
+  </form></section>
+  <section class="panel"><h2>विद्यार्थियों के MCQ परिणाम</h2><div id="mcqResults" class="resource-list"><p class="muted">परिणाम लोड हो रहे हैं…</p></div></section>
   <div class="notice"><b>महत्वपूर्ण:</b> यह बिना सर्वर वाला शुरुआती डेमो है। डेटा इसी ब्राउज़र/डिवाइस में रहता है। Browser data clear करने पर डेटा मिट सकता है; PDF और डेटा दूसरे मोबाइल पर अपने-आप नहीं दिखेंगे। असली सुरक्षित Admin Login, cloud database, multi-device PDF storage और student login के लिए backend (जैसे Supabase) जोड़ना आवश्यक है। केवल वही किताबें/PDF अपलोड करें जिन्हें प्रकाशित करने की अनुमति हो।</div>
  </section>
 </main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="backend-config.js"></script><script src="admin.js"></script></body></html>
