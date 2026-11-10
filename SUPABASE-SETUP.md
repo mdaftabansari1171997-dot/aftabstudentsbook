@@ -33,3 +33,11 @@ Set the custom domain in your hosting settings and configure DNS at your registr
 - PDFs are stored in a private bucket; authenticated users can request short-lived signed links.
 - This setup does not automatically import or redistribute copyrighted textbooks. Upload only material you own or are licensed to share.
 - Take a backup before changing an existing live project. This starter does not modify or migrate any existing customer database.
+
+
+## BA and university content
+The admin form now supports BA Semester 1–6, BA Part 1–3 and other college courses, plus a Bihar university selector. If the original SQL was already run, run this additive migration in SQL Editor:
+```
+alter table public.study_materials add column if not exists university text;
+```
+Choose `Urdu` in the Medium field when adding Urdu study materials. Upload only material you are allowed to distribute.

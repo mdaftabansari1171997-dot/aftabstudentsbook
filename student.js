@@ -17,5 +17,19 @@ $('otpForm').addEventListener('submit',async e=>{
 });
 $('backToMobile').addEventListener('click',()=>{$('otpForm').hidden=true;$('mobileForm').hidden=false;$('studentMessage').textContent='';});
 $('studentLogout').addEventListener('click',async()=>{await sb.auth.signOut();$('studentDashboard').hidden=true;$('loginBox').hidden=false;$('mobileForm').reset();$('otpForm').reset();$('otpForm').hidden=true;$('mobileForm').hidden=false;$('studentMessage').textContent='आप लॉगआउट हो गए हैं।';});
-function showDashboard(profile){$('loginBox').hidden=true;$('studentDashboard').hidden=false;$('welcomeName').textContent=profile.name||'Student';$('profileName').textContent=profile.name||'—';$('profileMobile').textContent=profile.phone||'—';$('profileMobile2').textContent=profile.phone||'—';}
+async function showDashboard(profile){$('loginBox').hidden=true;$('studentDashboard').hidden=false;$('welcomeName').textContent=profile.name||'Student';$('profileName').textContent=profile.name||'—';$('profileMobile').textContent=profile.phone||'—';$('profileMobile2').textContent=profile.phone||'—';await loadMaterials();}
+async function loadMaterials(){
+ const box=$('studentMaterials');box.innerHTML='<p class="muted">Loading…</p>';
+ let query=sb.from('study_materials').select('*').eq('is_published',true).order('created_at',{ascending:false});
+ const board=$('studentBoardFilter')?.value,lang=$('studentLanguageFilter')?.value;
+ if(board){query=query.or(`board.eq.${board},university.eq.${board}`);}
+ if(lang)query=query.eq('language',lang);
+ const {data,error}=await query;
+ if(error){box.textContent='सामग्री लोड नहीं हुई: '+error.message;return;}
+ box.innerHTML='';if(!data?.length){box.innerHTML='<p class="muted">अभी कोई सामग्री उपलब्ध नहीं है। Admin से सामग्री अपलोड करवाएँ।</p>';return;}
+ for(const item of data){const row=document.createElement('div');row.className='resource-item';const info=document.createElement('div');const b=document.createElement('b');b.textContent=item.title;const sm=document.createElement('small');sm.textContent=[item.board,item.university,item.course,item.class_level,item.subject,item.language,item.material_type].filter(Boolean).join(' • ');info.append(b,sm);row.append(info);
+ if(item.file_path){const btn=document.createElement('button');btn.textContent='Open PDF';btn.onclick=async()=>{const {data,error}=await sb.storage.from('study-pdfs').createSignedUrl(item.file_path,300);if(error)alert(error.message);else window.open(data.signedUrl,'_blank','noopener')};row.append(btn);}
+ box.append(row);}
+}
+$('studentBoardFilter')?.addEventListener('change',loadMaterials);$('studentLanguageFilter')?.addEventListener('change',loadMaterials);
 (async()=>{const {data:{user}}=await sb.auth.getUser();if(user){const {data}=await sb.from('profiles').select('*').eq('id',user.id).maybeSingle();if(data)showDashboard({name:data.full_name,phone:data.phone});}})();

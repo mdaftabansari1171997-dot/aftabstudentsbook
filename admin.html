@@ -3,9 +3,9 @@
 <body class="admin-body">
 <header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">A</span><span>AFTAB <b>STUDENTS BOOK</b><small>ADMIN CONSOLE</small></span></a><a class="nav-cta" href="index.html">← View Website</a></header>
 <main class="admin-wrap">
- <section class="login-card" id="loginCard"><div class="admin-icon">✦</div><div class="eyebrow">SECURE AREA • DEMO MODE</div><h1>Admin Login</h1><p>अपने Study Portal का कंटेंट मैनेज करें।</p>
+ <section class="login-card" id="loginCard"><div class="admin-icon">✦</div><div class="eyebrow">SECURE ADMIN AREA</div><h1>Admin Login</h1><p>अपने Study Portal का कंटेंट मैनेज करें।</p>
   <form id="loginForm"><label>Admin Email<input id="username" type="email" autocomplete="username" required placeholder="admin@example.com"></label><label>Password<input id="password" type="password" autocomplete="current-password" required placeholder="Supabase admin password"></label><button class="btn primary full" type="submit">Login to Dashboard →</button><div id="loginError" class="error"></div></form>
-  <div class="demo-hint">पहले Supabase Auth में admin email user बनाएँ और SQL से उसका role <b>admin</b> करें। विवरण README में हैं।</div>
+  <div class="demo-hint">अपने Supabase Admin Email और Password से लॉगिन करें। पहले Supabase Auth में Admin User बनाएँ और उसके Profile का role <b>admin</b> सेट करें। पूरी प्रक्रिया SUPABASE-SETUP.md में है।</div>
  </section>
  <section id="dashboard" class="dashboard" hidden>
   <div class="dash-head"><div><div class="eyebrow">CONTENT MANAGEMENT</div><h1>Admin Dashboard</h1><p>Welcome to Aftab Students Book</p></div><button id="logout" class="btn light">Logout</button></div>
@@ -13,9 +13,10 @@
   <div class="admin-grid">
    <section class="panel"><h2>नया Study Material जोड़ें</h2><form id="resourceForm">
     <label>Title / सामग्री का नाम<input id="title" required placeholder="जैसे गणित अध्याय 1 नोट्स"></label>
-    <div class="form-row"><label>Board<select id="board"><option>Bihar Board</option><option>CBSE Board</option><option>ICSE Board</option><option>Other State Boards</option></select></label><label>Class<select id="class"><option value="">Select class</option></select></label></div>
+    <div class="form-row"><label>Board<select id="board"><option>Bihar Board</option><option>CBSE Board</option><option>ICSE Board</option><option>Other State Boards</option></select></label><label>Class / Semester<select id="class"><option value="">Select class / semester</option></select></label></div>
+    <div class="form-row"><label>Course<input id="course" placeholder="BA / BSc / BCom / Class"></label><label>University (for college courses)<select id="university"><option value="">Not applicable</option><option>Munger University</option><option>Tilka Manjhi Bhagalpur University</option><option>Patliputra University</option><option>Magadh University</option><option>Lalit Narayan Mithila University</option><option>Veer Kunwar Singh University</option><option>B. R. Ambedkar Bihar University</option><option>Jai Prakash University</option><option>Purnea University</option><option>Other Bihar University</option></select></label></div>
     <div class="form-row"><label>Subject<input id="subject" required placeholder="गणित / Science"></label><label>Type<select id="type"><option>Notes</option><option>Book</option><option>Model Paper</option><option>MCQ</option><option>Other</option></select></label></div>
-    <label>Medium<select id="medium"><option>Hindi</option><option>English</option><option>Both</option></select></label>
+    <label>Medium<select id="medium"><option>Hindi</option><option>English</option><option>Urdu</option><option>Both</option></select></label>
     <label>PDF File (optional)<input id="pdf" type="file" accept="application/pdf"></label>
     <button class="btn primary full" type="submit">＋ Save Study Material</button><div id="saveMessage" class="success"></div>
    </form></section>

@@ -101,3 +101,7 @@ for delete to authenticated using (bucket_id = 'study-pdfs' and public.is_aftab_
 
 -- After creating your own admin user through Supabase Auth, run:
 -- update public.profiles set role = 'admin' where id = 'YOUR_AUTH_USER_UUID';
+
+
+-- Safe additive migration if study_materials table was created earlier:
+alter table public.study_materials add column if not exists university text;
