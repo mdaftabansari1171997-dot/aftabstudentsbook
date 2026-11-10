@@ -189,3 +189,18 @@ showDashboard=async profile=>{
  await beforeProfileDashboard(profile);
  try{await loadMyCertificates();}catch(err){const box=$('myCertificates');if(box)box.textContent='Certificate load error: '+(err?.message||String(err));}
 };
+
+/* Certificate panel boot: independent of dashboard callback wrapping. */
+(async()=>{
+ const box=$('myCertificates');if(!box)return;
+ box.textContent='प्रमाणपत्र सूची जाँची जा रही है…';
+ try{
+  const {data,error}=await sb.auth.getSession();
+  if(error){box.textContent='Session error: '+error.message;return;}
+  if(data?.session?.user){
+   if($('studentDashboard').hidden===false) await loadMyCertificates();
+  }else{
+   box.textContent='विद्यार्थी Login करने के बाद आपके प्रमाणपत्र यहाँ दिखेंगे।';
+  }
+ }catch(err){box.textContent='Certificate error: '+(err?.message||String(err));}
+})();
