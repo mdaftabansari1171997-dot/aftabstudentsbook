@@ -155,3 +155,28 @@ async function loadStudentLeaderboard(){
 }
 const oldShowDashboardForProfile=showDashboard;
 showDashboard=async profile=>{await oldShowDashboardForProfile(profile);await loadStudentProfile();await loadStudentLeaderboard();};
+
+async function loadMyCertificates(){
+ const box=$('myCertificates');if(!box)return;
+ const {data:{user}}=await sb.auth.getUser();if(!user)return;
+ const {data:attempts,error}=await sb.from('mcq_attempts').select('id,quiz_id,score,total_questions,submitted_at').eq('student_id',user.id).order('submitted_at',{ascending:false});
+ box.innerHTML='';
+ if(error){box.textContent=error.message;return;}
+ if(!attempts?.length){box.textContent='अभी कोई टेस्ट परिणाम नहीं है।';return;}
+ const {data:settings}=await sb.from('certificate_settings').select('*').eq('id',1).maybeSingle();
+ const {data:quizzes}=await sb.from('mcq_quizzes').select('id,title').in('id',[...new Set(attempts.map(a=>a.quiz_id))]);
+ for(const a of attempts){const q=(quizzes||[]).find(x=>x.id===a.quiz_id);const row=document.createElement('div');row.className='resource-item';const info=document.createElement('div');const b=document.createElement('b');b.textContent=q?.title||'MCQ Test';const sm=document.createElement('small');sm.textContent=a.score+'/'+a.total_questions+' • '+Math.round(100*a.score/a.total_questions)+'% • '+new Date(a.submitted_at).toLocaleDateString();info.append(b,sm);const btn=document.createElement('button');btn.textContent='Certificate Print / PDF';btn.onclick=()=>printCertificate(a,q,settings);row.append(info,btn);box.append(row);}
+}
+function printCertificate(attempt,quiz,settings){
+ const name=$('profileEditName')?.value||$('welcomeName').textContent||'Student';
+ const center=settings?.center_name||'Aftab Students Book';
+ const pct=Math.round(100*attempt.score/attempt.total_questions);
+ const grade=pct>=90?'A+':pct>=80?'A':pct>=70?'B':pct>=60?'C':pct>=40?'D':'Needs Improvement';
+ const certId='ASB-'+String(attempt.id).padStart(6,'0');
+ const w=window.open('','_blank');if(!w){alert('कृपया इस साइट के लिए pop-up अनुमति दें।');return;}
+ w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Certificate</title><style>body{font-family:Arial,sans-serif;padding:32px;color:#172943}.cert{border:10px double #bd943d;padding:42px;text-align:center;max-width:850px;margin:auto;min-height:480px}.brand{font-size:14px;letter-spacing:3px;color:#9a7428}.cert h1{font-size:38px;color:#9a7428;margin:24px}.name{font-size:30px;font-weight:bold;border-bottom:1px solid #aaa;display:inline-block;padding:8px 30px}.score{font-size:22px;margin:24px}.meta{display:flex;justify-content:space-between;margin-top:65px;font-size:13px}.address{font-size:12px;margin-top:8px}@media print{button{display:none}}</style></head><body><div class="cert"><div class="brand">'+escapeCert(center)+'</div><h1>Certificate of Achievement</h1><p>This certificate is proudly presented to</p><div class="name">'+escapeCert(name)+'</div><p>for successfully completing</p><h2>'+escapeCert(quiz?.title||'Online MCQ Test')+'</h2><div class="score">Score: '+attempt.score+'/'+attempt.total_questions+' &nbsp; | &nbsp; '+pct+'% &nbsp; | &nbsp; Grade '+grade+'</div><p>Certificate ID: '+certId+'</p><div class="meta"><span>Issued: '+new Date(attempt.submitted_at).toLocaleDateString()+'</span><span>Authorized Signatory<br>'+escapeCert(settings?.contact_name||'Administrator')+'</span></div><div class="address">'+escapeCert(settings?.address||'')+'<br>'+escapeCert(settings?.phone||'')+' '+escapeCert(settings?.email||'')+'</div></div><script>window.onload=()=>window.print()<\/script></body></html>');
+ w.document.close();
+}
+function escapeCert(value){return String(value||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+const beforeProfileDashboard=showDashboard;
+showDashboard=async profile=>{await beforeProfileDashboard(profile);await loadMyCertificates();};
