@@ -178,3 +178,23 @@ as $$
 $$;
 revoke all on function public.get_mcq_leaderboard(integer) from public;
 grant execute on function public.get_mcq_leaderboard(integer) to authenticated;
+
+
+-- Prevent a student from changing their own role through profile update APIs.
+create or replace function public.protect_profile_role()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if new.role is distinct from old.role and not public.is_aftab_admin() then
+    raise exception 'Only an administrator can change profile roles';
+  end if;
+  return new;
+end;
+$$;
+drop trigger if exists protect_profile_role_trigger on public.profiles;
+create trigger protect_profile_role_trigger
+before update on public.profiles
+for each row execute function public.protect_profile_role();
