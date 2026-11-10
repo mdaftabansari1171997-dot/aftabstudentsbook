@@ -9,26 +9,38 @@ function updateSelectedLabel(){
  $('selectedClassLabel').textContent=parts.length?parts.join(' • ')+' की सामग्री':'सभी उपलब्ध सामग्री';
 }
 updateSelectedLabel();
-$('mobileForm').addEventListener('submit',async e=>{
+function normalizeStudentPhone(value){const digits=String(value||'').replace(/\D/g,'');return digits.length===10?'+91'+digits:(digits.startsWith('91')&&digits.length===12?'+'+digits:'');}
+function setStudentAuthMode(mode){
+ const login=mode==='login';
+ $('studentLoginForm').hidden=!login;$('studentRegisterForm').hidden=login;
+ $('showStudentLogin').classList.toggle('active',login);$('showStudentRegister').classList.toggle('active',!login);
+ $('studentMessage').textContent='';
+}
+$('showStudentLogin').addEventListener('click',()=>setStudentAuthMode('login'));
+$('showStudentRegister').addEventListener('click',()=>setStudentAuthMode('register'));
+$('studentRegisterForm').addEventListener('submit',async e=>{
  e.preventDefault();
- const name=$('studentName').value.trim(),phone=$('mobile').value.trim();
- if(!/^[6-9][0-9]{9}$/.test(phone)){$('studentMessage').textContent='कृपया सही 10 अंकों का भारतीय मोबाइल नंबर लिखें।';return;}
- $('studentMessage').textContent='OTP भेजा जा रहा है…';
- const {error}=await sb.auth.signInWithOtp({phone:'+91'+phone,options:{channel:'sms'}});
- if(error){$('studentMessage').textContent='OTP नहीं भेजा जा सका: '+error.message;return;}
- sessionStorage.setItem('aftab_pending_name',name);sessionStorage.setItem('aftab_pending_phone','+91'+phone);
- $('mobileForm').hidden=true;$('otpForm').hidden=false;$('studentMessage').textContent='आपके मोबाइल पर SMS OTP भेजा गया है।';
-});
-$('otpForm').addEventListener('submit',async e=>{
- e.preventDefault();
- const phone=sessionStorage.getItem('aftab_pending_phone'),name=sessionStorage.getItem('aftab_pending_name'),token=$('otp').value.trim();
- const {data,error}=await sb.auth.verifyOtp({phone,token,type:'sms'});
- if(error){$('studentMessage').textContent='OTP verification failed: '+error.message;return;}
+ const name=$('registerName').value.trim(),phone=normalizeStudentPhone($('registerMobile').value),password=$('registerPassword').value;
+ if(!phone){$('studentMessage').textContent='सही 10 अंकों का मोबाइल नंबर लिखें।';return;}
+ if(password!==$('registerPassword2').value){$('studentMessage').textContent='दोनों Password एक जैसे नहीं हैं।';return;}
+ $('studentMessage').textContent='Registration हो रहा है…';
+ const {data,error}=await sb.auth.signUp({phone,password,options:{data:{full_name:name}}});
+ if(error){$('studentMessage').textContent='Registration error: '+error.message;return;}
+ if(!data.session){$('studentMessage').textContent='Account बन गया है, लेकिन Supabase में Phone confirmation अभी चालू है। Admin को Confirm phone बंद करना होगा।';return;}
  const {error:profileError}=await sb.from('profiles').upsert({id:data.user.id,full_name:name,phone},{onConflict:'id'});
- if(profileError){$('studentMessage').textContent='Login हो गया, लेकिन profile save नहीं हुई: '+profileError.message;return;}
+ if(profileError){$('studentMessage').textContent='Account बन गया, Profile save error: '+profileError.message;return;}
  showDashboard({name,phone});
 });
-$('backToMobile').addEventListener('click',()=>{$('otpForm').hidden=true;$('mobileForm').hidden=false;$('studentMessage').textContent='';});
+$('studentLoginForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const phone=normalizeStudentPhone($('loginMobile').value),password=$('loginPassword').value;
+ if(!phone){$('studentMessage').textContent='सही 10 अंकों का मोबाइल नंबर लिखें।';return;}
+ $('studentMessage').textContent='Login हो रहा है…';
+ const {data,error}=await sb.auth.signInWithPassword({phone,password});
+ if(error){$('studentMessage').textContent='Login error: '+error.message;return;}
+ const {data:profile}=await sb.from('profiles').select('full_name,phone').eq('id',data.user.id).maybeSingle();
+ showDashboard({name:profile?.full_name||data.user.user_metadata?.full_name||'Student',phone:profile?.phone||phone});
+});
 $('studentLogout').addEventListener('click',async()=>{
  await sb.auth.signOut();$('studentDashboard').hidden=true;$('loginBox').hidden=false;
  $('mobileForm').reset();$('otpForm').reset();$('otpForm').hidden=true;$('mobileForm').hidden=false;
