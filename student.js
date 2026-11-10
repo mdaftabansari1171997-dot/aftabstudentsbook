@@ -158,13 +158,19 @@ showDashboard=async profile=>{await oldShowDashboardForProfile(profile);await lo
 
 async function loadMyCertificates(){
  const box=$('myCertificates');if(!box)return;
- const {data:{user}}=await sb.auth.getUser();if(!user)return;
+ box.textContent='आपके परिणाम खोजे जा रहे हैं…';
+ const {data,error:authError}=await sb.auth.getUser();
+ if(authError){box.textContent='Login जाँच नहीं हो सकी: '+authError.message;return;}
+ const user=data?.user;
+ if(!user){box.textContent='कृपया Student Portal में दोबारा Login करें।';return;}
  const {data:attempts,error}=await sb.from('mcq_attempts').select('id,quiz_id,score,total_questions,submitted_at').eq('student_id',user.id).order('submitted_at',{ascending:false});
  box.innerHTML='';
  if(error){box.textContent=error.message;return;}
  if(!attempts?.length){box.textContent='अभी कोई टेस्ट परिणाम नहीं है।';return;}
- const {data:settings}=await sb.from('certificate_settings').select('*').eq('id',1).maybeSingle();
- const {data:quizzes}=await sb.from('mcq_quizzes').select('id,title').in('id',[...new Set(attempts.map(a=>a.quiz_id))]);
+ const {data:settings, error:settingsError}=await sb.from('certificate_settings').select('*').eq('id',1).maybeSingle();
+ if(settingsError){box.textContent='Certificate Settings error: '+settingsError.message;return;}
+ const {data:quizzes,error:quizError}=await sb.from('mcq_quizzes').select('id,title').in('id',[...new Set(attempts.map(a=>a.quiz_id))]);
+ if(quizError){box.textContent='Test details error: '+quizError.message;return;}
  for(const a of attempts){const q=(quizzes||[]).find(x=>x.id===a.quiz_id);const row=document.createElement('div');row.className='resource-item';const info=document.createElement('div');const b=document.createElement('b');b.textContent=q?.title||'MCQ Test';const sm=document.createElement('small');sm.textContent=a.score+'/'+a.total_questions+' • '+Math.round(100*a.score/a.total_questions)+'% • '+new Date(a.submitted_at).toLocaleDateString();info.append(b,sm);const btn=document.createElement('button');btn.textContent='Certificate Print / PDF';btn.onclick=()=>printCertificate(a,q,settings);row.append(info,btn);box.append(row);}
 }
 function printCertificate(attempt,quiz,settings){
@@ -179,4 +185,7 @@ function printCertificate(attempt,quiz,settings){
 }
 function escapeCert(value){return String(value||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 const beforeProfileDashboard=showDashboard;
-showDashboard=async profile=>{await beforeProfileDashboard(profile);await loadMyCertificates();};
+showDashboard=async profile=>{
+ await beforeProfileDashboard(profile);
+ try{await loadMyCertificates();}catch(err){const box=$('myCertificates');if(box)box.textContent='Certificate load error: '+(err?.message||String(err));}
+};
