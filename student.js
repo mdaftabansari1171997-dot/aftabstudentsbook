@@ -89,7 +89,7 @@ async function loadStudentQuizzes(){
 }
 async function startQuiz(quiz){
  const runner=$('quizRunner');runner.hidden=false;runner.innerHTML='<p>प्रश्न लोड हो रहे हैं…</p>';
- const {data:questions,error}=await sb.from('mcq_questions').select('id,question_text,option_a,option_b,option_c,option_d,sort_order').eq('quiz_id',quiz.id).order('sort_order');
+ const {data:questions,error}=await sb.from('mcq_student_questions').select('id,quiz_id,question_text,option_a,option_b,option_c,option_d,sort_order').eq('quiz_id',quiz.id).order('sort_order');
  if(error){runner.textContent=error.message;return;}
  if(!questions?.length){runner.textContent='इस Test में अभी प्रश्न नहीं जोड़े गए हैं।';return;}
  let current=0;const answers={};
