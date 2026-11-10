@@ -6,15 +6,22 @@
  <section class="student-login" id="loginBox">
   <div class="admin-icon">🎓</div><div class="eyebrow">STUDENT ACCESS</div><h1>Student Login / Registration</h1><p>अपने मोबाइल नंबर से विद्यार्थी पोर्टल खोलें।</p>
   <form id="mobileForm"><label>विद्यार्थी का नाम<input id="studentName" placeholder="अपना नाम लिखें" required></label><label>मोबाइल नंबर<input id="mobile" type="tel" inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" placeholder="10 अंकों का मोबाइल नंबर" required></label><button class="btn primary full" type="submit">OTP भेजें →</button></form>
-  <form id="otpForm" hidden><label>Demo OTP<input id="otp" inputmode="numeric" maxlength="6" placeholder="6 अंकों का OTP" required></label><button class="btn primary full" type="submit">Verify OTP</button><button class="text-btn" id="backToMobile" type="button">मोबाइल नंबर बदलें</button></form>
+  <form id="otpForm" hidden><label>SMS OTP<input id="otp" inputmode="numeric" maxlength="6" placeholder="6 अंकों का OTP" required></label><button class="btn primary full" type="submit">Verify OTP</button><button class="text-btn" id="backToMobile" type="button">मोबाइल नंबर बदलें</button></form>
   <div id="studentMessage" class="student-message" aria-live="polite"></div>
-  <div class="demo-hint">वास्तविक SMS OTP के लिए Supabase Auth में Phone provider और SMS provider configure होना जरूरी है।</div>
+  <div class="demo-hint">विद्यार्थी Login के लिए Supabase Auth में Phone provider और SMS provider चालू होना जरूरी है। SMS provider की फीस लागू हो सकती है।</div>
  </section>
  <section id="studentDashboard" hidden>
   <div class="student-welcome"><div><div class="eyebrow">YOUR LEARNING SPACE</div><h1>नमस्ते, <span id="welcomeName">Student</span> 👋</h1><p>आज कुछ नया सीखें और अपनी तैयारी बेहतर बनाएँ।</p></div><button class="btn light" id="studentLogout">Logout</button></div>
-  <div class="student-summary"><div><small>आपका मोबाइल</small><b id="profileMobile">—</b></div><div><small>Learning Portal</small><b>Class 1–12</b></div></div>
-  <section class="student-panel"><h2>अपनी पढ़ाई शुरू करें</h2><div class="student-actions"><a href="index.html#classes"><span>📚</span><b>कक्षा और बोर्ड</b><small>अपनी कक्षा चुनें</small></a><a href="index.html#resources"><span>📄</span><b>Study Material</b><small>Notes और Model Papers</small></a><a href="index.html#test"><span>✍️</span><b>MCQ Practice</b><small>अपनी तैयारी जाँचें</small></a></div></section>
-  <section class="student-panel"><h2>Student Profile</h2><p class="profile-line"><span>नाम</span><b id="profileName">—</b></p><p class="profile-line"><span>मोबाइल</span><b id="profileMobile2">—</b></p><p class="profile-line"><span>Registration</span><b>Demo account</b></p></section>
-  <div class="notice"><b>ध्यान दें:</b> यह शुरुआती डेमो है। प्रोफाइल इसी ब्राउज़र में सेव होती है। वास्तविक OTP, सुरक्षित पासवर्ड/सेशन, सर्वर डेटाबेस और सभी डिवाइस पर लॉगिन के लिए backend आवश्यक है।</div>
+  <div class="student-summary"><div><small>आपका मोबाइल</small><b id="profileMobile">—</b></div><div><small>Learning Portal</small><b>Study Library</b></div></div>
+  <section class="student-panel" id="materialsPanel">
+   <div class="materials-heading"><div><h2>Study Material Library</h2><p id="selectedClassLabel">सभी उपलब्ध सामग्री</p></div><a class="small-link" href="index.html#classes">कक्षा बदलें</a></div>
+   <div class="student-filters">
+    <label>Board<select id="studentBoardFilter"><option value="">All Boards</option><option>Bihar Board</option><option>CBSE Board</option><option>ICSE Board</option><option>Other State Boards</option></select></label>
+    <label>Class<select id="studentClassFilter"><option value="">All Classes</option><option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option><option>Class 11</option><option>Class 12</option><option>BA Semester 1</option><option>BA Semester 2</option><option>BA Semester 3</option><option>BA Semester 4</option><option>BA Semester 5</option><option>BA Semester 6</option><option>BA Part 1</option><option>BA Part 2</option><option>BA Part 3</option></select></label>
+    <label>Medium<select id="studentLanguageFilter"><option value="">All Mediums</option><option>Hindi</option><option>English</option><option>Urdu</option><option>Both</option></select></label>
+   </div>
+   <div id="studentMaterials" class="resource-list"><p class="muted">सामग्री लोड हो रही है…</p></div>
+  </section>
+  <section class="student-panel"><h2>Student Profile</h2><p class="profile-line"><span>नाम</span><b id="profileName">—</b></p><p class="profile-line"><span>मोबाइल</span><b id="profileMobile2">—</b></p><p class="profile-line"><span>Registration</span><b>Supabase account</b></p></section>
  </section>
 </main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="backend-config.js"></script><script src="student.js"></script></body></html>
