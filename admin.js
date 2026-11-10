@@ -56,11 +56,22 @@ async function loadMcqAdmin(){
   const del=document.createElement('button');del.className='delete-btn';del.textContent='Delete';del.onclick=async()=>{if(confirm('इस MCQ Test और इसके प्रश्न हटाएँ?')){const {error}=await sb.from('mcq_quizzes').delete().eq('id',q.id);if(error)alert(error.message);else loadMcqAdmin();}};
   actions.append(pub,del);row.append(info,actions);list.append(row);
  }
- const {data:attempts,error:attemptError}=await sb.from('mcq_attempts').select('id,quiz_id,student_id,score,total_questions,submitted_at').order('submitted_at',{ascending:false}).limit(50);
+
+ const {data:attempts,error:attemptError}=await sb.from('mcq_attempts').select('id,quiz_id,student_id,score,total_questions,submitted_at').order('submitted_at',{ascending:false}).limit(100);
  const results=$('mcqResults');results.innerHTML='';
  if(attemptError){results.textContent='Results error: '+attemptError.message;return;}
- for(const at of attempts||[]){const q=(quizzes||[]).find(x=>x.id===at.quiz_id);const row=document.createElement('div');row.className='resource-item';const info=document.createElement('div');const b=document.createElement('b');b.textContent=(q?.title||'MCQ Test')+' — '+at.score+'/'+at.total_questions;const sm=document.createElement('small');sm.textContent='Student ID: '+at.student_id+' • '+new Date(at.submitted_at).toLocaleString();info.append(b,sm);row.append(info);results.append(row);}
+ const studentIds=[...new Set((attempts||[]).map(x=>x.student_id))];
+ let profileMap={};
+ if(studentIds.length){const {data:profiles, error:profileError}=await sb.from('profiles').select('id,full_name,phone,class_level,board').in('id',studentIds);if(!profileError)for(const p of profiles||[])profileMap[p.id]=p;}
+ for(const at of attempts||[]){
+  const q=(quizzes||[]).find(x=>x.id===at.quiz_id),p=profileMap[at.student_id]||{};
+  const row=document.createElement('div');row.className='resource-item';
+  const info=document.createElement('div');const b=document.createElement('b');b.textContent=(p.full_name||'Student')+' — '+(q?.title||'MCQ Test')+' — '+at.score+'/'+at.total_questions;
+  const sm=document.createElement('small');sm.textContent=[p.phone,p.board,p.class_level,new Date(at.submitted_at).toLocaleString()].filter(Boolean).join(' • ');
+  info.append(b,sm);row.append(info);results.append(row);
+ }
  if(!attempts?.length)results.innerHTML='<p class="muted">अभी कोई विद्यार्थी परिणाम नहीं है।</p>';
+
 }
 $('quizForm').addEventListener('submit',async e=>{
  e.preventDefault();const {data:{user}}=await sb.auth.getUser();
