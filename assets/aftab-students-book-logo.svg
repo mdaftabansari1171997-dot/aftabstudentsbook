@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 700" role="img" aria-labelledby="t d">
+<title id="t">AFTAB STUDENTS BOOK</title><desc id="d">Navy and gold education emblem with graduation cap, open book and laurel wreath.</desc>
+<defs>
+ <radialGradient id="bg"><stop stop-color="#172b55"/><stop offset="1" stop-color="#020b24"/></radialGradient>
+ <linearGradient id="gold" x2="0" y2="1"><stop stop-color="#fff4a6"/><stop offset=".28" stop-color="#f8c637"/><stop offset=".62" stop-color="#bd7600"/><stop offset="1" stop-color="#ffe98b"/></linearGradient>
+ <linearGradient id="page" x2="0" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#b9d8ff"/></linearGradient>
+ <linearGradient id="red" x2="0" y2="1"><stop stop-color="#ff4c4c"/><stop offset="1" stop-color="#8e000b"/></linearGradient>
+ <filter id="shadow"><feGaussianBlur stdDeviation="5"/></filter>
+</defs>
+<circle cx="350" cy="350" r="337" fill="url(#bg)" stroke="url(#gold)" stroke-width="12"/>
+<circle cx="350" cy="350" r="318" fill="none" stroke="#d99b20" stroke-width="3"/>
+<g fill="url(#gold)" stroke="#ffed9b" stroke-width="2">
+ <path d="M130 450 Q70 330 130 210 Q90 300 153 425Z"/><path d="M570 450 Q630 330 570 210 Q610 300 547 425Z"/>
+ <g><ellipse cx="118" cy="270" rx="12" ry="29" transform="rotate(-32 118 270)"/><ellipse cx="145" cy="310" rx="12" ry="29" transform="rotate(35 145 310)"/><ellipse cx="105" cy="345" rx="12" ry="29" transform="rotate(-35 105 345)"/><ellipse cx="155" cy="375" rx="12" ry="29" transform="rotate(38 155 375)"/><ellipse cx="124" cy="410" rx="12" ry="29" transform="rotate(-35 124 410)"/>
+ <ellipse cx="582" cy="270" rx="12" ry="29" transform="rotate(32 582 270)"/><ellipse cx="555" cy="310" rx="12" ry="29" transform="rotate(-35 555 310)"/><ellipse cx="595" cy="345" rx="12" ry="29" transform="rotate(35 595 345)"/><ellipse cx="545" cy="375" rx="12" ry="29" transform="rotate(-38 545 375)"/><ellipse cx="576" cy="410" rx="12" ry="29" transform="rotate(35 576 410)"/></g>
+</g>
+<g transform="translate(350 200)">
+ <circle cx="-115" cy="-5" r="47" fill="#ffbd20" opacity=".95"/><g stroke="#f7b52a" stroke-width="7"><path d="M-115 -80v-28 M-190 -52l-20 -22 M-40 -52l20 -22 M-220 -5h-28 M-10 -5h28"/></g>
+ <path d="M-120 -92 L0 -155 L120 -92 L0 -32Z" fill="#06142d" stroke="url(#gold)" stroke-width="7"/><path d="M-75 -83h150v26q-75 38-150 0Z" fill="url(#gold)"/><path d="M120 -92v65" stroke="url(#gold)" stroke-width="6"/><circle cx="120" cy="-24" r="8" fill="url(#gold)"/>
+ <path d="M-70 125 L0 -35 L70 125 L35 125 L0 40 L-35 125Z" fill="url(#gold)" stroke="#fff1a0" stroke-width="3"/>
+ <path d="M-150 20 Q-70 -2 0 75 Q70 -2 150 20 L205 130 Q100 105 0 170 Q-100 105 -205 130Z" fill="url(#page)" stroke="url(#gold)" stroke-width="8"/>
+ <path d="M0 75v95 M-130 37q65 -8 115 38 M130 37q-65 -8 -115 38" fill="none" stroke="#9bb8df" stroke-width="5"/>
+ <path d="M0 65l-12 35h24Z" fill="url(#gold)"/><path d="M0 100v50" stroke="#b8790b" stroke-width="8"/>
+</g>
+<text x="350" y="430" text-anchor="middle" font-family="Georgia,serif" font-size="94" font-weight="bold" fill="url(#gold)" stroke="#7e4c00" stroke-width="2">AFTAB</text>
+<path d="M92 470 Q350 420 608 470 L590 540 Q350 510 110 540Z" fill="url(#red)" stroke="url(#gold)" stroke-width="7"/>
+<text x="350" y="512" text-anchor="middle" font-family="Arial,sans-serif" font-size="42" font-weight="bold" letter-spacing="2" fill="#fff">STUDENTS BOOK</text>
+<path d="M170 585h110 M420 585h110" stroke="url(#gold)" stroke-width="5"/><path d="M350 568l-35 25 35 22 35-22Z" fill="#fff" stroke="url(#gold)" stroke-width="4"/>
+<text x="350" y="640" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="25" fill="#fff">Learn • Practice • Test • Grow</text>
+</svg>
