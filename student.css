@@ -26,3 +26,9 @@
 @media(max-width:600px){.profile-form .form-row{grid-template-columns:1fr}.leaderboard-row{grid-template-columns:32px 1fr}.leaderboard-row strong{grid-column:2}}
 
 #myCertificates .resource-item{display:flex;justify-content:space-between;align-items:center;gap:12px}#myCertificates button{border:0;background:#1267d6;color:white;border-radius:7px;padding:9px 12px;cursor:pointer}
+
+/* Respect the HTML hidden attribute even when forms use display:grid. */
+.student-login [hidden], .student-body [hidden] { display: none !important; }
+.auth-tabs{display:flex;gap:8px;margin:12px 0 18px}
+.auth-tabs button{flex:1;padding:10px;border:1px solid #dce5f0;border-radius:8px;background:#f7faff;color:#1267d6;cursor:pointer}
+.auth-tabs button.active{background:#1267d6;color:#fff;border-color:#1267d6}
