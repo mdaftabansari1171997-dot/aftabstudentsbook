@@ -13,7 +13,7 @@
 <header class="topbar">
   <a class="brand" href="#"><img class="brand-logo" src="assets/aftab-students-book-logo.svg" alt="Aftab Students Book logo"><span>AFTAB <b>STUDENTS BOOK</b><small>LEARN • PRACTICE • SUCCEED</small></span></a>
   <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
-  <nav id="nav"><a class="active" href="#">⌂ Home</a><a href="#classes">▤ Model Papers</a><a href="#resources">♧ Study Material</a><a href="#test">▣ Online Test</a><a href="student.html#studentDashboard">▥ Results</a><a href="#degree">▦ More</a><a href="admin.html">Admin</a></nav>
+  <nav id="nav"><a class="active" href="#">⌂ Home</a><a href="#model-papers">▤ Model Papers</a><a href="#resources">♧ Study Material</a><a href="#test">▣ Online Test</a><a href="student.html#studentDashboard">▥ Results</a><a href="#degree">▦ More</a><a href="admin.html">Admin</a></nav>
   <a class="nav-cta" href="student.html">Student Login ↗</a>
 </header>
 <main>
@@ -56,13 +56,24 @@
 </section>
 
 <section class="section resource-section" id="resources">
- <div class="section-head"><div><div class="eyebrow">YOUR DIGITAL STUDY LIBRARY</div><h2>Study Material</h2><p>अपनी जरूरत के अनुसार अध्ययन सामग्री चुनें।</p></div></div>
- <div class="resource-grid">
-  <article class="resource-card"><div class="resource-icon blue">▤</div><h3>Chapter Notes</h3><p>अध्यायवार सरल नोट्स और महत्वपूर्ण बिंदु।</p><a href="#classes">कक्षा चुनें →</a></article>
-  <article class="resource-card"><div class="resource-icon gold">✓</div><h3>MCQ Practice</h3><p>विषयवार वस्तुनिष्ठ प्रश्न और उत्तर।</p><a href="#test">टेस्ट शुरू करें →</a></article>
-  <article class="resource-card"><div class="resource-icon purple">▣</div><h3>Model Papers</h3><p>परीक्षा पैटर्न पर आधारित अभ्यास पेपर।</p><a href="#classes">कक्षा चुनें →</a></article>
-  <article class="resource-card"><div class="resource-icon green">⬇</div><h3>PDF Library</h3><p>अध्ययन सामग्री PDF में उपलब्ध कराएँ।</p><a href="#classes">कक्षा चुनें →</a></article>
+ <div class="library-heading"><div><div class="eyebrow">AFTAB DIGITAL STUDY LIBRARY</div><h2>Study Material Library</h2><p>Class aur subject ke hisaab se notes, chapter PDFs aur practice material dekhein.</p></div><a class="library-view-all" href="student.html">Open Student Library ↗</a></div>
+ <div class="library-toolbar"><span>📚 Browse by category</span><span>PDF • Notes • MCQ • Revision</span></div>
+ <div class="resource-grid hybrid-resource-grid">
+  <article class="resource-card hybrid-card"><div class="resource-icon blue">▤</div><div class="hybrid-card-tag">CHAPTER WISE</div><h3>Chapter Notes</h3><p>Chapter-wise notes, key points aur quick revision material.</p><a href="student.html">Explore Notes <b>→</b></a></article>
+  <article class="resource-card hybrid-card"><div class="resource-icon gold">✓</div><div class="hybrid-card-tag">PRACTICE</div><h3>MCQ Practice</h3><p>Subject-wise objective questions se apni taiyari parakhein.</p><a href="#test">Start Practice <b>→</b></a></article>
+  <article class="resource-card hybrid-card"><div class="resource-icon purple">▣</div><div class="hybrid-card-tag">DIGITAL BOOKS</div><h3>PDF Study Library</h3><p>Available study PDFs aur learning resources ek jagah.</p><a href="student.html">Browse PDFs <b>→</b></a></article>
+  <article class="resource-card hybrid-card"><div class="resource-icon green">✎</div><div class="hybrid-card-tag">QUICK REVISION</div><h3>Revision Material</h3><p>Exam se pehle important topics aur revision points padhein.</p><a href="student.html">View Material <b>→</b></a></article>
  </div>
+</section>
+<section class="section model-paper-section" id="model-papers">
+ <div class="library-heading"><div><div class="eyebrow">BOARD EXAM PRACTICE ZONE</div><h2>Model Papers & Question Bank</h2><p>Bihar Board aur anya boards ke exam-pattern practice papers.</p></div><span class="paper-year">SESSION 2026–27</span></div>
+ <div class="paper-filter-row"><span>🎯 Select your class</span><div class="paper-class-pills"><a href="student.html?class_level=Class%209">Class 9</a><a href="student.html?class_level=Class%2010">Class 10</a><a href="student.html?class_level=Class%2011">Class 11</a><a href="student.html?class_level=Class%2012">Class 12</a></div></div>
+ <div class="paper-grid">
+  <article class="paper-card paper-blue"><div class="paper-top"><span>📘 BIHAR BOARD</span><b>2026–27</b></div><div class="paper-illustration">📐</div><h3>Class 10 Model Papers</h3><p>Subject-wise practice papers aur question bank.</p><a href="student.html?class_level=Class%2010">View Class 10 Papers <b>→</b></a></article>
+  <article class="paper-card paper-violet"><div class="paper-top"><span>📗 BIHAR BOARD</span><b>2026–27</b></div><div class="paper-illustration">🧪</div><h3>Class 12 Model Papers</h3><p>Science, Arts aur Commerce practice material.</p><a href="student.html?class_level=Class%2012">View Class 12 Papers <b>→</b></a></article>
+  <article class="paper-card paper-gold"><div class="paper-top"><span>📝 QUESTION BANK</span><b>ALL SUBJECTS</b></div><div class="paper-illustration">📚</div><h3>Previous Year Practice</h3><p>Previous year pattern par taiyari aur revision.</p><a href="student.html">Explore Question Bank <b>→</b></a></article>
+ </div>
+ <div class="paper-disclaimer">Note: Yahan diye gaye links Student Portal ki available uploaded material list kholte hain. PDF tabhi download hoga jab Admin us material ko upload aur publish karega. 2027 ke official papers ko official release se pehle official nahi kaha jayega.</div>
 </section>
 <section class="test-section" id="test">
  <div class="test-copy"><div class="eyebrow">QUICK KNOWLEDGE CHECK</div><h2>अपनी तैयारी<br>आज ही जाँचें।</h2><p>एक छोटा डेमो MCQ हल करें। सही उत्तर चुनें और तुरंत परिणाम देखें।</p></div>
