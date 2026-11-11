@@ -32,3 +32,7 @@
 .auth-tabs{display:flex;gap:8px;margin:12px 0 18px}
 .auth-tabs button{flex:1;padding:10px;border:1px solid #dce5f0;border-radius:8px;background:#f7faff;color:#1267d6;cursor:pointer}
 .auth-tabs button.active{background:#1267d6;color:#fff;border-color:#1267d6}
+
+/* Strong hidden-state override for all auth forms and dashboard panels. */
+form[hidden], section[hidden], div[hidden] { display: none !important; }
+#studentRegisterForm[hidden], #studentLoginForm[hidden] { display: none !important; }
