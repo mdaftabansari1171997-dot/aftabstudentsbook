@@ -40,11 +40,14 @@ $('studentLoginForm').addEventListener('submit',async e=>{
  const {data,error}=await sb.auth.signInWithPassword({email,password});
  if(error){$('studentMessage').textContent='Login error: '+error.message;return;}
  const {data:profile}=await sb.from('profiles').select('full_name,phone').eq('id',data.user.id).maybeSingle();
- showDashboard({name:profile?.full_name||data.user.user_metadata?.full_name||'Student',phone:profile?.phone||data.user.user_metadata?.phone||'—'});
+ const studentName=profile?.full_name||data.user.user_metadata?.full_name||'Student';
+ const studentPhone=profile?.phone||data.user.user_metadata?.phone||'';
+ if(!profile){const {error:saveError}=await sb.from('profiles').upsert({id:data.user.id,full_name:studentName,phone:studentPhone},{onConflict:'id'});if(saveError){$('studentMessage').textContent='Login हुआ, Profile save error: '+saveError.message;return;}}
+ showDashboard({name:studentName,phone:studentPhone||'—'});
 });
 $('studentLogout').addEventListener('click',async()=>{
  await sb.auth.signOut();$('studentDashboard').hidden=true;$('loginBox').hidden=false;
- $('mobileForm').reset();$('otpForm').reset();$('otpForm').hidden=true;$('mobileForm').hidden=false;
+ $('studentLoginForm').reset();$('studentRegisterForm').reset();setStudentAuthMode('login');
  $('studentMessage').textContent='आप लॉगआउट हो गए हैं।';
 });
 async function showDashboard(profile){
