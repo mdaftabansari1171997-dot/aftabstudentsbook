@@ -7,19 +7,20 @@
   <div class="admin-icon">🎓</div><div class="eyebrow">STUDENT ACCESS</div><h1>Student Login / Registration</h1><p>अपने मोबाइल नंबर से विद्यार्थी पोर्टल खोलें।</p>
   <div class="auth-tabs"><button type="button" id="showStudentLogin" class="small-btn">Login</button><button type="button" id="showStudentRegister" class="small-btn">नया Registration</button></div>
   <form id="studentLoginForm">
-   <label>मोबाइल नंबर<input id="loginMobile" type="tel" inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" placeholder="10 अंकों का मोबाइल नंबर" required></label>
+   <label>Email ID<input id="loginEmail" type="email" autocomplete="username" placeholder="अपना Email लिखें" required></label>
    <label>Password<input id="loginPassword" type="password" minlength="6" autocomplete="current-password" placeholder="अपना Password लिखें" required></label>
    <button class="btn primary full" type="submit">Login करें →</button>
   </form>
   <form id="studentRegisterForm" hidden>
    <label>विद्यार्थी का पूरा नाम<input id="registerName" maxlength="100" placeholder="अपना नाम लिखें" required></label>
    <label>मोबाइल नंबर<input id="registerMobile" type="tel" inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" placeholder="10 अंकों का मोबाइल नंबर" required></label>
+   <label>Email ID<input id="registerEmail" type="email" autocomplete="email" placeholder="अपना Email लिखें" required></label>
    <label>Password (कम से कम 6 अक्षर)<input id="registerPassword" type="password" minlength="6" autocomplete="new-password" required></label>
    <label>Password दोबारा लिखें<input id="registerPassword2" type="password" minlength="6" autocomplete="new-password" required></label>
    <button class="btn primary full" type="submit">Registration करें</button>
   </form>
   <div id="studentMessage" class="student-message" aria-live="polite"></div>
-  <div class="demo-hint">अब Login मोबाइल नंबर और Password से होगा। SMS OTP की जरूरत नहीं है।</div>
+  <div class="demo-hint">अब Login Email और Password से Login होगा। मोबाइल नंबर Profile में सुरक्षित रहेगा; SMS OTP की जरूरत नहीं है।</div>
  </section>
  <section id="studentDashboard" hidden>
   <div class="student-welcome"><div><div class="eyebrow">YOUR LEARNING SPACE</div><h1>नमस्ते, <span id="welcomeName">Student</span> 👋</h1><p>आज कुछ नया सीखें और अपनी तैयारी बेहतर बनाएँ।</p></div><button class="btn light" id="studentLogout">Logout</button></div>
@@ -48,4 +49,4 @@
   <section class="student-panel"><h2>My Certificates / मेरे प्रमाणपत्र</h2><div id="myCertificates" class="resource-list">लोड हो रहा है…</div></section>
   <section class="student-panel"><h2>🏆 Top 10 Student Leaderboard</h2><div id="studentLeaderboard" class="leaderboard-list">लोड हो रहा है…</div></section>
  </section>
-</main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="backend-config.js"></script><script src="student.js?v=mobilepass1"></script></body></html>
+</main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="backend-config.js"></script><script src="student.js?v=emailpass1"></script></body></html>
