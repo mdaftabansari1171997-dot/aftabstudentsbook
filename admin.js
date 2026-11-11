@@ -68,7 +68,8 @@ async function loadMcqAdmin(){
   const row=document.createElement('div');row.className='resource-item';
   const info=document.createElement('div');const b=document.createElement('b');b.textContent=(p.full_name||'Student')+' — '+(q?.title||'MCQ Test')+' — '+at.score+'/'+at.total_questions;
   const sm=document.createElement('small');sm.textContent=[p.phone,p.board,p.class_level,new Date(at.submitted_at).toLocaleString()].filter(Boolean).join(' • ');
-  info.append(b,sm);row.append(info);results.append(row);
+  info.append(b,sm);
+  const certBtn=document.createElement('button');certBtn.type='button';certBtn.className='small-btn';certBtn.textContent='Certificate देखें / Print';certBtn.addEventListener('click',()=>adminPrintCertificate(at,p,q));row.append(info,certBtn);results.append(row);
  }
  if(!attempts?.length)results.innerHTML='<p class="muted">अभी कोई विद्यार्थी परिणाम नहीं है।</p>';
 
@@ -140,3 +141,21 @@ $('studentSearchBtn').addEventListener('click',loadStudentDirectory);
 $('studentSearch').addEventListener('keydown',e=>{if(e.key==='Enter')loadStudentDirectory();});
 const priorShowDashboard=showDashboard;
 showDashboard=async()=>{await priorShowDashboard();await loadCertificateSettings();await loadStudentDirectory();};
+
+
+function adminPrintCertificate(attempt,profile,quiz){
+ const pct=Math.round(100*attempt.score/attempt.total_questions);
+ const grade=pct>=90?'A+':pct>=80?'A':pct>=70?'B':pct>=60?'C':pct>=40?'D':'Needs Improvement';
+ const certId='ASB-'+String(attempt.id).padStart(6,'0');
+ const issued=new Date(attempt.submitted_at).toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'});
+ const w=window.open('','_blank');if(!w){alert('कृपया इस साइट के लिए pop-up अनुमति दें।');return;}
+ const esc=v=>String(v||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+ const center=$('centerName')?.value.trim()||'Aftab Students Book';
+ const contact=$('centerContactName')?.value.trim()||'Authorized Signatory';
+ const address=$('centerAddress')?.value.trim()||'';
+ const phone=$('centerPhone')?.value.trim()||'';
+ const email=$('centerEmail')?.value.trim()||'';
+ w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Student Achievement Certificate</title><style>'+
+ '*{box-sizing:border-box}body{margin:0;padding:22px;background:#f4f1e8;color:#263247;font-family:Georgia,"Times New Roman",serif}.cert{position:relative;max-width:1050px;min-height:690px;margin:0 auto;padding:35px 64px;text-align:center;background:#fffdf7;border:12px double #b58a32;outline:2px solid #e7cf8d;outline-offset:-23px;box-shadow:0 12px 40px #47340f22;overflow:hidden}.cert-logo{width:84px;height:84px;object-fit:contain;margin:0 auto 5px;display:block}.topline{font:700 11px Arial;letter-spacing:5px;color:#8d6a26}.brand{font:700 25px Georgia;color:#7d5b1d;margin:8px 0}.rule{width:150px;height:2px;background:#b58a32;margin:12px auto}.cert h1{font:700 42px Georgia;color:#9a7428;margin:12px 0 5px}.subtitle{font:italic 17px Georgia;color:#657080}.present{margin:22px 0 10px;font:italic 17px Georgia;color:#596579}.name{display:inline-block;min-width:360px;padding:7px 25px 12px;border-bottom:2px solid #c19a48;font:700 34px Georgia;color:#263247}.description{font:16px Georgia;color:#596579;margin:20px 0 8px}.test{font:700 23px Georgia;color:#34445d;margin:10px 0}.score{display:inline-block;margin:14px auto 8px;padding:12px 25px;border:1px solid #d5bd82;background:#fffaf0;font:700 17px Arial;color:#75591e}.certid{font:12px Arial;color:#7b8491;letter-spacing:1px;margin-top:12px}.seal{width:78px;height:78px;border:3px double #b58a32;border-radius:50%;display:grid;place-items:center;margin:12px auto 0;color:#987225;font:700 10px Arial}.footer{display:flex;justify-content:space-between;align-items:flex-end;margin-top:18px;font:12px Arial;color:#526075}.sign{min-width:210px;text-align:center}.signature-word{font:italic bold 42px "Brush Script MT","Segoe Script",cursive;color:#173b70;transform:rotate(-8deg)}.signline{border-top:1px solid #8e7950;padding-top:7px;margin-top:5px;font-weight:bold}.address{font:11px Arial;color:#7b8491;margin-top:15px;line-height:1.6}.printbar{text-align:center;margin:18px}.printbar button{border:0;border-radius:7px;background:#8c6825;color:white;padding:11px 22px;font-weight:bold;cursor:pointer}@page{size:A4 landscape;margin:10mm}@media print{body{padding:0;background:white}.cert{max-width:none;min-height:180mm;box-shadow:none;print-color-adjust:exact;-webkit-print-color-adjust:exact}.printbar{display:none}}</style></head><body><div class="cert"><img class="cert-logo" src="assets/aftab-students-book-logo.svg" alt="Aftab Students Book"><div class="topline">CERTIFICATE OF ACHIEVEMENT</div><div class="brand">'+esc(center)+'</div><div class="rule"></div><h1>Certificate</h1><div class="subtitle">of Academic Excellence</div><p class="present">This certificate is proudly presented to</p><div class="name">'+esc(profile.full_name||'Student')+'</div><p class="description">For completing the following online assessment</p><div class="test">'+esc(quiz?.title||'Online MCQ Test')+'</div><div class="score">Score: '+attempt.score+'/'+attempt.total_questions+' | '+pct+'% | Grade '+grade+'</div><div class="certid">CERTIFICATE ID: '+certId+'</div><div class="seal">VERIFIED<br>ACHIEVEMENT</div><div class="footer"><div>Date of Issue<br><b>'+issued+'</b></div><div class="sign"><div class="signature-word">AFTAB</div><div class="signline">'+esc(contact)+'<br><span style="font-weight:normal">Authorized Signatory</span></div></div></div><div class="address">'+esc(address)+'<br>'+esc(phone)+' '+esc(email)+'</div></div><div class="printbar"><button onclick="window.print()">Print / Save as PDF</button></div></body></html>');
+ w.document.close();
+}
