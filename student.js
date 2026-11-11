@@ -39,7 +39,8 @@ $('studentLoginForm').addEventListener('submit',async e=>{
  $('studentMessage').textContent='Login हो रहा है…';
  const {data,error}=await sb.auth.signInWithPassword({email,password});
  if(error){$('studentMessage').textContent='Login error: '+error.message;return;}
- const {data:profile}=await sb.from('profiles').select('full_name,phone').eq('id',data.user.id).maybeSingle();
+ const {data:profile}=await sb.from('profiles').select('full_name,phone,role').eq('id',data.user.id).maybeSingle();
+ if(profile?.role==='disabled'){await sb.auth.signOut();$('studentMessage').textContent='आपका Student Login Admin द्वारा बंद किया गया है। कृपया Coaching Center से संपर्क करें।';return;}
  const studentName=profile?.full_name||data.user.user_metadata?.full_name||'Student';
  const studentPhone=profile?.phone||data.user.user_metadata?.phone||'';
  if(!profile){const {error:saveError}=await sb.from('profiles').upsert({id:data.user.id,full_name:studentName,phone:studentPhone},{onConflict:'id'});if(saveError){$('studentMessage').textContent='Login हुआ, Profile save error: '+saveError.message;return;}}
@@ -90,7 +91,7 @@ async function loadMaterials(){
 ['studentBoardFilter','studentClassFilter','studentLanguageFilter'].forEach(id=>$(id).addEventListener('change',()=>{updateSelectedLabel();loadMaterials();loadStudentQuizzes();}));
 (async()=>{
  const {data:{user},error}=await sb.auth.getUser();if(error)return;
- if(user){const {data}=await sb.from('profiles').select('*').eq('id',user.id).maybeSingle();if(data)showDashboard({name:data.full_name,phone:data.phone});}
+ if(user){const {data}=await sb.from('profiles').select('*').eq('id',user.id).maybeSingle();if(data?.role==='disabled'){await sb.auth.signOut();$('studentMessage').textContent='आपका Student Login Admin द्वारा बंद किया गया है। कृपया Coaching Center से संपर्क करें।';}else if(data)showDashboard({name:data.full_name,phone:data.phone});}
 })();
 
 async function loadStudentQuizzes(){
