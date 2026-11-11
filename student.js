@@ -24,22 +24,23 @@ $('studentRegisterForm').addEventListener('submit',async e=>{
  if(!phone){$('studentMessage').textContent='सही 10 अंकों का मोबाइल नंबर लिखें।';return;}
  if(password!==$('registerPassword2').value){$('studentMessage').textContent='दोनों Password एक जैसे नहीं हैं।';return;}
  $('studentMessage').textContent='Registration हो रहा है…';
- const {data,error}=await sb.auth.signUp({phone,password,options:{data:{full_name:name}}});
+ const email=$('registerEmail').value.trim().toLowerCase();
+ const {data,error}=await sb.auth.signUp({email,password,options:{data:{full_name:name,phone}}});
  if(error){$('studentMessage').textContent='Registration error: '+error.message;return;}
- if(!data.session){$('studentMessage').textContent='Account बन गया है, लेकिन Supabase में Phone confirmation अभी चालू है। Admin को Confirm phone बंद करना होगा।';return;}
+ if(!data.session){$('studentMessage').textContent='Registration request सफल हुई। अपने Email Inbox में Supabase का verification link खोलें, फिर यहाँ Email और Password से Login करें। Spam folder भी देखें।';return;}
  const {error:profileError}=await sb.from('profiles').upsert({id:data.user.id,full_name:name,phone},{onConflict:'id'});
  if(profileError){$('studentMessage').textContent='Account बन गया, Profile save error: '+profileError.message;return;}
  showDashboard({name,phone});
 });
 $('studentLoginForm').addEventListener('submit',async e=>{
  e.preventDefault();
- const phone=normalizeStudentPhone($('loginMobile').value),password=$('loginPassword').value;
- if(!phone){$('studentMessage').textContent='सही 10 अंकों का मोबाइल नंबर लिखें।';return;}
+ const email=$('loginEmail').value.trim().toLowerCase(),password=$('loginPassword').value;
+ if(!email){$('studentMessage').textContent='सही Email ID लिखें।';return;}
  $('studentMessage').textContent='Login हो रहा है…';
- const {data,error}=await sb.auth.signInWithPassword({phone,password});
+ const {data,error}=await sb.auth.signInWithPassword({email,password});
  if(error){$('studentMessage').textContent='Login error: '+error.message;return;}
  const {data:profile}=await sb.from('profiles').select('full_name,phone').eq('id',data.user.id).maybeSingle();
- showDashboard({name:profile?.full_name||data.user.user_metadata?.full_name||'Student',phone:profile?.phone||phone});
+ showDashboard({name:profile?.full_name||data.user.user_metadata?.full_name||'Student',phone:profile?.phone||data.user.user_metadata?.phone||'—'});
 });
 $('studentLogout').addEventListener('click',async()=>{
  await sb.auth.signOut();$('studentDashboard').hidden=true;$('loginBox').hidden=false;
