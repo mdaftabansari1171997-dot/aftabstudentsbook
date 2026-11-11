@@ -104,12 +104,37 @@ $('certificateSettingsForm').addEventListener('submit',async e=>{
 async function loadStudentDirectory(){
  const box=$('studentDirectory');box.textContent='लोड हो रहा है…';
  const term=$('studentSearch').value.trim();
- let query=sb.from('profiles').select('id,full_name,phone,board,class_level,medium,created_at').order('created_at',{ascending:false}).limit(500);
+ let query=sb.from('profiles').select('id,full_name,phone,board,class_level,medium,role,created_at').order('created_at',{ascending:false}).limit(500);
  if(term)query=query.or('full_name.ilike.%'+term+'%,phone.ilike.%'+term+'%,class_level.ilike.%'+term+'%,id.eq.'+term);
  const {data,error}=await query;box.innerHTML='';
  if(error){box.textContent='Student list error: '+error.message;return;}
  if(!data?.length){box.textContent='कोई विद्यार्थी नहीं मिला।';return;}
- for(const p of data){const row=document.createElement('div');row.className='resource-item';const info=document.createElement('div');const b=document.createElement('b');b.textContent=p.full_name||'नाम उपलब्ध नहीं';const sm=document.createElement('small');sm.textContent=[p.phone,p.board,p.class_level,p.medium,'ID: '+p.id].filter(Boolean).join(' • ');info.append(b,sm);row.append(info);box.append(row);}
+ for(const p of data){
+  const row=document.createElement('div');row.className='resource-item';
+  const info=document.createElement('div');const b=document.createElement('b');b.textContent=p.full_name||'नाम उपलब्ध नहीं';
+  const sm=document.createElement('small');sm.textContent=[p.phone,p.board,p.class_level,p.medium,p.role==='disabled'?'DISABLED':'Active','ID: '+p.id].filter(Boolean).join(' • ');info.append(b,sm);
+  const actions=document.createElement('div');actions.style.display='flex';actions.style.flexWrap='wrap';actions.style.gap='6px';
+  const edit=document.createElement('button');edit.className='small-btn';edit.type='button';edit.textContent='Edit';
+  edit.onclick=async()=>{
+   const name=prompt('विद्यार्थी का पूरा नाम:',p.full_name||'');if(name===null)return;
+   const phone=prompt('मोबाइल नंबर:',p.phone||'');if(phone===null)return;
+   const board=prompt('Board (Bihar Board / CBSE Board / ICSE Board / Other State Boards):',p.board||'');if(board===null)return;
+   const cls=prompt('Class / Semester:',p.class_level||'');if(cls===null)return;
+   const medium=prompt('Medium (Hindi / English / Urdu / Both):',p.medium||'');if(medium===null)return;
+   const {error:updateError}=await sb.from('profiles').update({full_name:name.trim(),phone:phone.trim(),board:board.trim()||null,class_level:cls.trim()||null,medium:medium.trim()||null}).eq('id',p.id);
+   if(updateError){alert('Update नहीं हुआ: '+updateError.message);return;}alert('विद्यार्थी का विवरण अपडेट हो गया।');await loadStudentDirectory();
+  };
+  const toggle=document.createElement('button');toggle.className=p.role==='disabled'?'small-btn':'delete-btn';toggle.type='button';toggle.textContent=p.role==='disabled'?'Enable':'Delete Student';
+  toggle.onclick=async()=>{
+   const disabling=p.role!=='disabled';
+   const msg=disabling?'इस विद्यार्थी का Login बंद करें? पुराने Test Results और Certificates सुरक्षित रहेंगे।':'इस विद्यार्थी का Login फिर से चालू करें?';
+   if(!confirm(msg))return;
+   const {error:updateError}=await sb.from('profiles').update({role:disabling?'disabled':'student'}).eq('id',p.id);
+   if(updateError){alert('स्थिति नहीं बदली: '+updateError.message);return;}
+   alert(disabling?'विद्यार्थी का Login बंद कर दिया गया। पुराने रिकॉर्ड सुरक्षित हैं।':'विद्यार्थी का Login चालू कर दिया गया।');await loadStudentDirectory();
+  };
+  actions.append(edit,toggle);row.append(info,actions);box.append(row);
+ }
 }
 $('studentSearchBtn').addEventListener('click',loadStudentDirectory);
 $('studentSearch').addEventListener('keydown',e=>{if(e.key==='Enter')loadStudentDirectory();});
