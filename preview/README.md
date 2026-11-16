@@ -1,0 +1,1 @@
+Aftab Students Book preview branch content. Open preview/index.html after GitHub Pages is configured for this branch/folder. This is isolated from main and does not modify existing Supabase student/admin files.
