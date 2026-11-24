@@ -23,6 +23,17 @@
   <div class="demo-hint">अब Login Email और Password से Login होगा। मोबाइल नंबर Profile में सुरक्षित रहेगा; SMS OTP की जरूरत नहीं है।</div>
  </section>
  <section id="studentDashboard" hidden>
+  <div class="student-dashboard-layout">
+   <aside class="student-sidebar" aria-label="Student menu">
+    <div class="sidebar-caption">STUDENT MENU</div>
+    <a href="#materialsPanel">📚 Study Materials</a>
+    <a href="#class10PracticePanel" class="sidebar-feature">📝 Class 10 Chapter-wise MCQ</a>
+    <a href="#studentQuizPanel">🎯 Online MCQ Tests</a>
+    <a href="#profilePanel">👤 My Profile</a>
+    <a href="#myCertificates">🏅 My Certificates</a>
+    <a href="#studentLeaderboard">🏆 Leaderboard</a>
+   </aside>
+   <div class="student-dashboard-content">
   <div class="student-welcome"><div><div class="eyebrow">YOUR LEARNING SPACE</div><h1>नमस्ते, <span id="welcomeName">Student</span> 👋</h1><p>आज कुछ नया सीखें और अपनी तैयारी बेहतर बनाएँ।</p></div><button class="btn light" id="studentLogout">Logout</button></div>
   <div class="student-summary"><div><small>आपका मोबाइल</small><b id="profileMobile">—</b></div><div><small>Learning Portal</small><b>Study Library</b></div></div>
   <section class="student-panel" id="materialsPanel">
@@ -35,6 +46,13 @@
    <div id="studentMaterials" class="resource-list"><p class="muted">सामग्री लोड हो रही है…</p></div>
   </section>
 
+  <section class="student-panel class10-practice-panel" id="class10PracticePanel">
+   <div class="class10-practice-heading"><div><span class="practice-kicker">CLASS 10 • CHAPTER-WISE</span><h2>Class 10 Chapter-wise MCQ Practice</h2><p class="muted">विषय चुनें और प्रकाशित अध्याय टेस्ट से अभ्यास शुरू करें।</p></div><span class="practice-mark">10</span></div>
+   <label class="chapter-subject-label">Subject / विषय
+    <select id="class10SubjectFilter"><option value="">सभी विषय</option></select>
+   </label>
+   <div id="class10ChapterList" class="chapter-practice-list"><p class="muted">अध्याय लोड हो रहे हैं…</p></div>
+  </section>
   <section class="student-panel" id="studentQuizPanel"><h2>Online MCQ Tests</h2><p class="muted">अपनी कक्षा के अनुसार टेस्ट चुनें और अभ्यास करें।</p><div id="studentQuizList" class="quiz-list">MCQ Tests लोड हो रहे हैं…</div><div id="quizRunner" hidden></div><div id="quizHistory" class="quiz-history"></div></section>
   <section class="student-panel" id="profilePanel"><h2>Student Profile / विद्यार्थी विवरण</h2>
    <form id="profileForm" class="profile-form">
@@ -48,5 +66,7 @@
   </section>
   <section class="student-panel"><h2>My Certificates / मेरे प्रमाणपत्र</h2><div id="myCertificates" class="resource-list">लोड हो रहा है…</div></section>
   <section class="student-panel"><h2>🏆 Top 10 Student Leaderboard</h2><div id="studentLeaderboard" class="leaderboard-list">लोड हो रहा है…</div></section>
+   </div>
+  </div>
  </section>
 </main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="backend-config.js"></script><script src="student.js?v=gold-logo1"></script></body></html>
