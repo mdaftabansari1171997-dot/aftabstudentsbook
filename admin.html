@@ -8,16 +8,19 @@
   <div class="demo-hint">अपने Supabase Admin Email और Password से लॉगिन करें। पहले Supabase Auth में Admin User बनाएँ और उसके Profile का role <b>admin</b> सेट करें। पूरी प्रक्रिया SUPABASE-SETUP.md में है।</div>
  </section>
  <section id="dashboard" class="dashboard" hidden>
-  <div class="dash-head"><div><div class="eyebrow">CONTENT MANAGEMENT</div><h1>Admin Dashboard</h1><p>Welcome to Aftab Students Book</p></div><button id="logout" class="btn light">Logout</button></div>
-  <div class="stats"><div><small>Total Resources</small><b id="totalResources">0</b></div><div><small>PDF Resources</small><b id="pdfResources">0</b></div><div><small>MCQ Sets</small><b id="mcqResources">0</b></div></div>
-  <nav class="admin-section-nav" aria-label="Admin dashboard menu">
+  <div class="admin-dashboard-layout">
+  <aside class="student-sidebar admin-sidebar" aria-label="Admin menu">
+   <div class="sidebar-caption">ADMIN MENU</div>
    <button type="button" data-admin-panel="adminMaterialsPanel" class="active">📚 Study Materials</button>
    <button type="button" data-admin-panel="mcqAdminPanel">🎯 MCQ Tests</button>
    <button type="button" data-admin-panel="questionAdminPanel">✍️ Add Questions</button>
    <button type="button" data-admin-panel="mcqResultsPanel">📊 MCQ Results</button>
    <button type="button" data-admin-panel="certificateAdminPanel">🏅 Certificate Settings</button>
    <button type="button" data-admin-panel="studentDirectoryPanel">👥 Student Directory</button>
-  </nav>
+  </aside>
+  <div class="admin-dashboard-content">
+  <div class="dash-head"><div><div class="eyebrow">CONTENT MANAGEMENT</div><h1>Admin Dashboard</h1><p>Welcome to Aftab Students Book</p></div><button id="logout" class="btn light">Logout</button></div>
+  <div class="stats"><div><small>Total Resources</small><b id="totalResources">0</b></div><div><small>PDF Resources</small><b id="pdfResources">0</b></div><div><small>MCQ Sets</small><b id="mcqResources">0</b></div></div>
   <div class="admin-grid" id="adminMaterialsPanel">
    <section class="panel"><h2>नया Study Material जोड़ें</h2><form id="resourceForm">
     <label>Title / सामग्री का नाम<input id="title" required placeholder="जैसे गणित अध्याय 1 नोट्स"></label>
@@ -63,5 +66,7 @@
    <div id="studentDirectory" class="resource-list">विद्यार्थियों का डेटा लोड हो रहा है…</div>
   </section>
   <div class="notice"><b>महत्वपूर्ण:</b> यह बिना सर्वर वाला शुरुआती डेमो है। डेटा इसी ब्राउज़र/डिवाइस में रहता है। Browser data clear करने पर डेटा मिट सकता है; PDF और डेटा दूसरे मोबाइल पर अपने-आप नहीं दिखेंगे। असली सुरक्षित Admin Login, cloud database, multi-device PDF storage और student login के लिए backend (जैसे Supabase) जोड़ना आवश्यक है। केवल वही किताबें/PDF अपलोड करें जिन्हें प्रकाशित करने की अनुमति हो।</div>
+  </div>
+ </div>
  </section>
 </main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="backend-config.js"></script><script src="admin.js?v=admin-cert-view1"></script></body></html>
