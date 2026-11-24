@@ -10,7 +10,15 @@
  <section id="dashboard" class="dashboard" hidden>
   <div class="dash-head"><div><div class="eyebrow">CONTENT MANAGEMENT</div><h1>Admin Dashboard</h1><p>Welcome to Aftab Students Book</p></div><button id="logout" class="btn light">Logout</button></div>
   <div class="stats"><div><small>Total Resources</small><b id="totalResources">0</b></div><div><small>PDF Resources</small><b id="pdfResources">0</b></div><div><small>MCQ Sets</small><b id="mcqResources">0</b></div></div>
-  <div class="admin-grid">
+  <nav class="admin-section-nav" aria-label="Admin dashboard menu">
+   <button type="button" data-admin-panel="adminMaterialsPanel" class="active">📚 Study Materials</button>
+   <button type="button" data-admin-panel="mcqAdminPanel">🎯 MCQ Tests</button>
+   <button type="button" data-admin-panel="questionAdminPanel">✍️ Add Questions</button>
+   <button type="button" data-admin-panel="mcqResultsPanel">📊 MCQ Results</button>
+   <button type="button" data-admin-panel="certificateAdminPanel">🏅 Certificate Settings</button>
+   <button type="button" data-admin-panel="studentDirectoryPanel">👥 Student Directory</button>
+  </nav>
+  <div class="admin-grid" id="adminMaterialsPanel">
    <section class="panel"><h2>नया Study Material जोड़ें</h2><form id="resourceForm">
     <label>Title / सामग्री का नाम<input id="title" required placeholder="जैसे गणित अध्याय 1 नोट्स"></label>
     <div class="form-row"><label>Board<select id="board"><option>Bihar Board</option><option>CBSE Board</option><option>ICSE Board</option><option>Other State Boards</option></select></label><label>Class / Semester<select id="class"><option value="">Select class / semester</option></select></label></div>
@@ -23,13 +31,13 @@
    <section class="panel"><div class="panel-head"><h2>Uploaded Material</h2><button id="export" class="small-btn">Export CSV</button></div><div id="resourceList" class="resource-list"><p class="muted">अभी कोई सामग्री नहीं है।</p></div></section>
   </div>
 
-  <section class="panel mcq-admin-panel"><h2>MCQ Test बनाएं</h2><form id="quizForm">
+  <section class="panel mcq-admin-panel" id="mcqAdminPanel" hidden><h2>MCQ Test बनाएं</h2><form id="quizForm">
    <label>Test का नाम<input id="quizTitle" required placeholder="जैसे Class 10 Science Test 1"></label>
    <div class="form-row"><label>Board<select id="quizBoard"><option>Bihar Board</option><option>CBSE Board</option><option>ICSE Board</option><option>Other State Boards</option></select></label><label>Class<select id="quizClass"><option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option selected>Class 10</option><option>Class 11</option><option>Class 12</option><option>BA Semester 1</option><option>BA Semester 2</option><option>BA Semester 3</option><option>BA Semester 4</option><option>BA Semester 5</option><option>BA Semester 6</option></select></label></div>
    <div class="form-row"><label>Subject<input id="quizSubject" required placeholder="Science / Math / Hindi"></label><label>Duration (minutes)<input id="quizDuration" type="number" min="1" max="240" value="15" required></label></div>
    <button class="btn primary full" type="submit">＋ Create MCQ Test</button><div id="quizSaveMessage" class="success"></div>
   </form><div id="adminQuizList" class="resource-list mcq-list"><p class="muted">MCQ Test लोड हो रहे हैं…</p></div></section>
-  <section class="panel"><h2>चुने हुए Test में प्रश्न जोड़ें</h2><form id="questionForm">
+  <section class="panel" id="questionAdminPanel" hidden><h2>चुने हुए Test में प्रश्न जोड़ें</h2><form id="questionForm">
    <label>Test चुनें<select id="questionQuizSelect" required><option value="">पहले MCQ Test बनाएं</option></select></label>
    <label>प्रश्न<textarea id="questionText" rows="2" required placeholder="प्रश्न लिखें"></textarea></label>
    <div class="form-row"><label>Option A<input id="optionA" required></label><label>Option B<input id="optionB" required></label></div>
@@ -37,9 +45,9 @@
    <div class="form-row"><label>सही उत्तर<select id="correctOption"><option>A</option><option>B</option><option>C</option><option>D</option></select></label><label>Explanation (optional)<input id="questionExplanation"></label></div>
    <button class="btn primary full" type="submit">＋ प्रश्न सेव करें</button><div id="questionSaveMessage" class="success"></div>
   </form></section>
-  <section class="panel"><h2>विद्यार्थियों के MCQ परिणाम</h2><div id="mcqResults" class="resource-list"><p class="muted">परिणाम लोड हो रहे हैं…</p></div></section>
+  <section class="panel" id="mcqResultsPanel" hidden><h2>विद्यार्थियों के MCQ परिणाम</h2><div id="mcqResults" class="resource-list"><p class="muted">परिणाम लोड हो रहे हैं…</p></div></section>
 
-  <section class="panel admin-tools">
+  <section class="panel admin-tools" id="certificateAdminPanel" hidden>
    <h2>Certificate Settings / प्रमाणपत्र विवरण</h2>
    <form id="certificateSettingsForm">
     <label>Coaching Center Name<input id="centerName" required placeholder="कोचिंग सेंटर का नाम"></label>
@@ -49,7 +57,7 @@
     <button class="btn primary" type="submit">Certificate Details Save करें</button><div id="certificateSettingsMessage" class="success"></div>
    </form>
   </section>
-  <section class="panel admin-tools">
+  <section class="panel admin-tools" id="studentDirectoryPanel" hidden>
    <h2>Student Directory / सभी विद्यार्थी</h2>
    <div class="student-search"><input id="studentSearch" placeholder="नाम, मोबाइल, कक्षा या Student ID से खोजें"><button id="studentSearchBtn" class="small-btn" type="button">Search</button></div>
    <div id="studentDirectory" class="resource-list">विद्यार्थियों का डेटा लोड हो रहा है…</div>
