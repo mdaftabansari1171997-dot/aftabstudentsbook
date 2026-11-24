@@ -4,3 +4,7 @@
 .mcq-admin-panel{grid-column:1/-1}
 
 .admin-tools{margin-top:18px}.student-search{display:flex;gap:8px;margin:12px 0}.student-search input{flex:1;min-width:0}.admin-tools form{display:grid;gap:12px}
+
+
+/* Direct-open Admin Dashboard sections */
+.admin-section-nav{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 22px;position:sticky;top:8px;z-index:5;padding:10px;background:#fff;border:1px solid #e2e8f0;border-radius:14px;box-shadow:0 6px 20px #17255412}.admin-section-nav button{border:1px solid #dbe2f0;background:#f8fafc;color:#263247;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer}.admin-section-nav button.active{background:#1e3a8a;color:#fff;border-color:#1e3a8a}.dashboard [hidden]{display:none!important}#adminMaterialsPanel,#mcqAdminPanel,#questionAdminPanel,#mcqResultsPanel,#certificateAdminPanel,#studentDirectoryPanel{scroll-margin-top:100px}
