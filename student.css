@@ -84,3 +84,7 @@ form[hidden], section[hidden], div[hidden] { display: none !important; }
 .practice-kicker{color:#1e3a8a}
 .auth-tabs button.active{background:#1e3a8a;border-color:#1e3a8a}
 @media(max-width:600px){.student-wrap{margin:18px auto}.student-panel{padding:16px}}
+
+
+/* Direct-open dashboard navigation */
+.student-panel[hidden]{display:none!important}.student-sidebar [data-panel]{cursor:pointer}.student-sidebar [data-panel].active{background:#e9edff;color:#1e3a8a;font-weight:800;box-shadow:inset 3px 0 #f59e0b}.student-panel{scroll-margin-top:90px}
