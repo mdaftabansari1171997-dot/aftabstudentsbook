@@ -76,6 +76,18 @@ async function loadMaterials(){
   info.append(title,meta);
   if(item.description){const description=document.createElement('p');description.className='material-description';description.textContent=item.description;info.append(description);}
   row.append(info);
+  if(item.material_type==='Model Paper'){
+   const printBtn=document.createElement('button');printBtn.type='button';printBtn.textContent='पढ़ें / Print करें';
+   printBtn.addEventListener('click',()=>{
+    const w=window.open('','_blank');
+    if(!w){alert('कृपया इस साइट के लिए pop-up अनुमति दें।');return;}
+    w.document.write('<!doctype html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Model Paper</title><style>body{font-family:Arial,sans-serif;max-width:900px;margin:28px auto;padding:0 18px;color:#172033;line-height:1.65}h1{font-size:22px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:16px/1.7 Arial,sans-serif}button{padding:10px 18px;margin:12px 0}@media print{button{display:none}body{margin:0;max-width:none}}</style></head><body><button onclick="window.print()">Print / PDF Save</button><h1 id="paperTitle"></h1><pre id="paperText"></pre></body></html>');
+    w.document.close();
+    w.document.getElementById('paperTitle').textContent=item.title;
+    w.document.getElementById('paperText').textContent=item.description||'';
+   });
+   row.append(printBtn);
+  }
   if(item.file_path){
    const btn=document.createElement('button');btn.type='button';btn.textContent='PDF खोलें';
    btn.addEventListener('click',async()=>{
