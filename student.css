@@ -36,3 +36,28 @@
 /* Strong hidden-state override for all auth forms and dashboard panels. */
 form[hidden], section[hidden], div[hidden] { display: none !important; }
 #studentRegisterForm[hidden], #studentLoginForm[hidden] { display: none !important; }
+
+
+/* Student dashboard side navigation */
+.student-dashboard-layout{display:grid;grid-template-columns:225px minmax(0,1fr);gap:20px;align-items:start}
+.student-sidebar{position:sticky;top:18px;display:grid;gap:7px;padding:15px;background:#fff;border:1px solid #e5ebf3;border-radius:14px;box-shadow:0 8px 24px #1b365408}
+.sidebar-caption{padding:4px 9px 9px;color:#8b98a9;font-size:10px;font-weight:800;letter-spacing:1.5px}
+.student-sidebar a{display:block;padding:11px 10px;border-radius:9px;color:#43536a;font-size:12px;font-weight:700;line-height:1.45}
+.student-sidebar a:hover{background:#f1f6fd;color:#1267d6}
+.student-sidebar a.sidebar-feature{background:#eaf3ff;color:#125db5;border:1px solid #d4e6fc}
+.student-dashboard-content{min-width:0}
+.class10-practice-panel{border-color:#dce9f8;background:linear-gradient(145deg,#fff 0%,#f8fbff 100%)}
+.class10-practice-heading{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.class10-practice-heading h2{margin:5px 0 4px}
+.class10-practice-heading p{margin:0 0 12px}
+.practice-kicker{font-size:10px;font-weight:800;letter-spacing:1.4px;color:#1267d6}
+.practice-mark{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:#eaf3ff;color:#1267d6;font-size:22px;font-weight:800}
+.chapter-subject-label{max-width:280px;display:grid;gap:6px;margin:10px 0 14px;color:#64748b;font-size:12px;font-weight:700}
+.chapter-subject-label select{width:100%;padding:10px;border:1px solid #dce5f0;border-radius:8px;background:#fff;color:#253a57}
+.chapter-practice-list{display:grid;gap:9px}
+.chapter-practice-item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px;border:1px solid #e5edf7;border-radius:10px;background:#fff}
+.chapter-practice-item strong{display:block;color:#263a56;font-size:13px}
+.chapter-practice-item small{display:block;margin-top:4px;color:#8290a3;font-size:11px}
+.chapter-practice-item button{flex-shrink:0;border:0;border-radius:7px;background:#1267d6;color:white;padding:9px 12px;font-size:12px;font-weight:700;cursor:pointer}
+@media(max-width:760px){.student-dashboard-layout{grid-template-columns:1fr}.student-sidebar{position:static;display:flex;gap:6px;overflow-x:auto;padding:9px}.sidebar-caption{display:none}.student-sidebar a{white-space:nowrap;padding:9px}.student-dashboard-content{min-width:0}}
+@media(max-width:480px){.chapter-practice-item{align-items:flex-start;flex-direction:column}.chapter-practice-item button{width:100%}}
