@@ -63,3 +63,24 @@ form[hidden], section[hidden], div[hidden] { display: none !important; }
 @media(max-width:480px){.chapter-practice-item{align-items:flex-start;flex-direction:column}.chapter-practice-item button{width:100%}}
 
 .material-description{margin:5px 0 0;color:#52627a;font-size:12px;line-height:1.8;white-space:pre-wrap}
+
+/* Matching professional student portal theme */
+.student-body{background:#f8fafc;color:#172554}
+.student-body .topbar{background:#fff;color:#172554;border-bottom:1px solid #e2e8f0;box-shadow:0 3px 18px #0f172a08}
+.student-body .topbar .brand{color:#172554}.student-body .topbar .brand b{color:#1e3a8a}.student-body .topbar .brand small{color:#64748b}
+.student-body .topbar .nav-cta{background:#1e3a8a;color:#fff;box-shadow:none;border-radius:9px}
+.student-wrap{max-width:1160px;margin:34px auto}
+.student-login,.student-summary>div,.student-panel,.student-sidebar{border:1px solid #e2e8f0;border-radius:14px;box-shadow:0 4px 16px #0f172a06}
+.student-login h1,.student-welcome h1{color:#172554}
+.student-wrap input,.student-filters select,.chapter-subject-label select{border:1px solid #cbd5e1;border-radius:9px}
+.student-wrap .btn.primary,.student-panel button,.chapter-practice-item button,.quiz-list button,.quiz-navigation button{background:#1e3a8a;color:#fff;border-radius:9px;box-shadow:none}
+.student-summary b{color:#1e3a8a}
+.student-sidebar a:hover,.student-sidebar a.sidebar-feature{background:#eef2ff;color:#1e3a8a;border-color:#dbeafe}
+.student-panel{padding:22px}
+.student-panel h2{font-family:Poppins,'Hind Vadodara',sans-serif;color:#172554}
+#studentMaterials .resource-item,.quiz-list .resource-item,.chapter-practice-item,.leaderboard-row{border-color:#e2e8f0;border-radius:10px}
+#studentMaterials button,#myCertificates button{background:#1e3a8a;border-radius:8px}
+.practice-mark{background:#eef2ff;color:#1e3a8a}
+.practice-kicker{color:#1e3a8a}
+.auth-tabs button.active{background:#1e3a8a;border-color:#1e3a8a}
+@media(max-width:600px){.student-wrap{margin:18px auto}.student-panel{padding:16px}}
