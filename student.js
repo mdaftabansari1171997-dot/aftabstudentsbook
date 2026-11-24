@@ -289,3 +289,14 @@ async function loadClass10ChapterPractice(){
  render();
  subjectSelect.onchange=render;
 }
+
+
+// Dashboard menu: open one selected section directly.
+document.querySelectorAll('.student-sidebar [data-panel]').forEach(link=>{
+ link.addEventListener('click',e=>{
+  e.preventDefault(); const target=link.dataset.panel;
+  document.querySelectorAll('#studentDashboard .student-panel').forEach(panel=>{panel.hidden=panel.id!==target;});
+  document.querySelectorAll('.student-sidebar [data-panel]').forEach(item=>item.classList.toggle('active',item===link));
+  document.getElementById(target)?.scrollIntoView({behavior:'smooth',block:'start'});
+ });
+});
