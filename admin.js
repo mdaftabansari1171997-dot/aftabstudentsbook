@@ -162,13 +162,13 @@ function adminPrintCertificate(attempt,profile,quiz){
 
 
 // Admin menu: switch directly to the selected management section.
-document.querySelectorAll('.admin-section-nav [data-admin-panel]').forEach(button=>{
+document.querySelectorAll('.admin-sidebar [data-admin-panel]').forEach(button=>{
  button.addEventListener('click',()=>{
   const target=button.dataset.adminPanel;
   ['adminMaterialsPanel','mcqAdminPanel','questionAdminPanel','mcqResultsPanel','certificateAdminPanel','studentDirectoryPanel'].forEach(id=>{
    const panel=document.getElementById(id); if(panel) panel.hidden=id!==target;
   });
-  document.querySelectorAll('.admin-section-nav [data-admin-panel]').forEach(item=>item.classList.toggle('active',item===button));
+  document.querySelectorAll('.admin-sidebar [data-admin-panel]').forEach(item=>item.classList.toggle('active',item===button));
   document.getElementById(target)?.scrollIntoView({behavior:'smooth',block:'start'});
  });
 });
