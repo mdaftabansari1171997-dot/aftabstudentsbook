@@ -61,3 +61,5 @@ form[hidden], section[hidden], div[hidden] { display: none !important; }
 .chapter-practice-item button{flex-shrink:0;border:0;border-radius:7px;background:#1267d6;color:white;padding:9px 12px;font-size:12px;font-weight:700;cursor:pointer}
 @media(max-width:760px){.student-dashboard-layout{grid-template-columns:1fr}.student-sidebar{position:static;display:flex;gap:6px;overflow-x:auto;padding:9px}.sidebar-caption{display:none}.student-sidebar a{white-space:nowrap;padding:9px}.student-dashboard-content{min-width:0}}
 @media(max-width:480px){.chapter-practice-item{align-items:flex-start;flex-direction:column}.chapter-practice-item button{width:100%}}
+
+.material-description{margin:5px 0 0;color:#52627a;font-size:12px;line-height:1.8;white-space:pre-wrap}
