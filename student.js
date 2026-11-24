@@ -88,7 +88,7 @@ async function loadMaterials(){
   box.append(row);
  }
 }
-['studentBoardFilter','studentClassFilter','studentLanguageFilter'].forEach(id=>$(id).addEventListener('change',()=>{updateSelectedLabel();loadMaterials();loadStudentQuizzes();}));
+['studentBoardFilter','studentClassFilter','studentLanguageFilter'].forEach(id=>$(id).addEventListener('change',()=>{updateSelectedLabel();loadMaterials();loadStudentQuizzes();if(id==='studentBoardFilter')loadClass10ChapterPractice();}));
 (async()=>{
  const {data:{user},error}=await sb.auth.getUser();if(error)return;
  if(user){const {data}=await sb.from('profiles').select('*').eq('id',user.id).maybeSingle();if(data?.role==='disabled'){await sb.auth.signOut();$('studentMessage').textContent='आपका Student Login Admin द्वारा बंद किया गया है। कृपया Coaching Center से संपर्क करें।';}else if(data)showDashboard({name:data.full_name,phone:data.phone});}
@@ -215,6 +215,7 @@ showDashboard=async profile=>{
  const tasks=[
   ['Study Material',loadMaterials,'studentMaterials'],
   ['MCQ Tests',loadStudentQuizzes,'studentQuizList'],
+  ['Class 10 Chapter MCQ',loadClass10ChapterPractice,'class10ChapterList'],
   ['Quiz History',loadQuizHistory,'quizHistory'],
   ['Student Profile',loadStudentProfile,'profileSaveMessage'],
   ['Leaderboard',loadStudentLeaderboard,'studentLeaderboard'],
@@ -238,3 +239,39 @@ showDashboard=async profile=>{
   }
  }catch(err){box.textContent='Certificate error: '+(err?.message||String(err));}
 })();
+
+
+/* Class 10 chapter-wise practice: uses existing published quiz records; no database schema changes. */
+async function loadClass10ChapterPractice(){
+ const box=$('class10ChapterList'),subjectSelect=$('class10SubjectFilter');
+ if(!box||!subjectSelect)return;
+ box.innerHTML='<p class="muted">Class 10 के प्रकाशित MCQ अध्याय खोजे जा रहे हैं…</p>';
+ let query=sb.from('mcq_quizzes').select('id,title,board,class_level,subject,duration_minutes').eq('is_published',true).eq('class_level','Class 10').order('created_at',{ascending:false});
+ const board=$('studentBoardFilter')?.value||'';
+ if(board)query=query.eq('board',board);
+ const {data,error}=await query;
+ if(error){box.textContent='Chapter-wise MCQ लोड नहीं हुए: '+error.message;return;}
+ const quizzes=data||[];
+ const subjects=[...new Set(quizzes.map(q=>q.subject).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+ const previous=subjectSelect.value;
+ subjectSelect.innerHTML='<option value="">सभी विषय</option>';
+ subjects.forEach(subject=>{const option=document.createElement('option');option.value=subject;option.textContent=subject;subjectSelect.append(option);});
+ if(subjects.includes(previous))subjectSelect.value=previous;
+ const render=()=>{
+  const chosen=subjectSelect.value;
+  const visible=quizzes.filter(q=>!chosen||q.subject===chosen);
+  box.innerHTML='';
+  if(!visible.length){box.innerHTML='<p class="muted">अभी Class 10 के लिए इस विषय में कोई Chapter MCQ प्रकाशित नहीं है। Admin Dashboard में Class 10 चुनकर हर अध्याय का MCQ Test प्रकाशित करें।</p>';return;}
+  visible.forEach((q,index)=>{
+   const row=document.createElement('article');row.className='chapter-practice-item';
+   const info=document.createElement('div');
+   const title=document.createElement('strong');title.textContent=(q.subject||'General')+' — '+q.title;
+   const meta=document.createElement('small');meta.textContent=[q.board||'All Boards',q.class_level,q.duration_minutes?(q.duration_minutes+' मिनट'):'Practice Test'].filter(Boolean).join(' • ');
+   info.append(title,meta);
+   const button=document.createElement('button');button.type='button';button.textContent='अभ्यास शुरू करें';button.addEventListener('click',()=>startQuiz(q));
+   row.append(info,button);box.append(row);
+  });
+ };
+ render();
+ subjectSelect.onchange=render;
+}
