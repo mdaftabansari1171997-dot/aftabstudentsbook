@@ -73,7 +73,9 @@ async function loadMaterials(){
   const info=document.createElement('div');info.className='resource-info';
   const title=document.createElement('b');title.textContent=item.title;
   const meta=document.createElement('small');meta.textContent=[item.board,item.class_level,item.course,item.university,item.subject,item.material_type,item.language].filter(Boolean).join(' • ');
-  info.append(title,meta);row.append(info);
+  info.append(title,meta);
+  if(item.description){const description=document.createElement('p');description.className='material-description';description.textContent=item.description;info.append(description);}
+  row.append(info);
   if(item.file_path){
    const btn=document.createElement('button');btn.type='button';btn.textContent='PDF खोलें';
    btn.addEventListener('click',async()=>{
@@ -84,7 +86,7 @@ async function loadMaterials(){
     window.open(fileData.signedUrl,'_blank','noopener');
    });
    row.append(btn);
-  }else{const tag=document.createElement('span');tag.className='material-no-file';tag.textContent='PDF उपलब्ध नहीं';row.append(tag);}
+  }else{const tag=document.createElement('span');tag.className='material-no-file';tag.textContent=item.description?'ऊपर नोट्स पढ़ें':'PDF उपलब्ध नहीं';row.append(tag);}
   box.append(row);
  }
 }
